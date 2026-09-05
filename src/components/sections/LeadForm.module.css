@@ -124,6 +124,7 @@
 
 .success {
   padding: var(--space-4);
+  border-radius: var(--radius-sm);
   background: var(--color-bg-accent);
   font-size: var(--text-sm);
   color: var(--color-text);

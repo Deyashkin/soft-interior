@@ -4,8 +4,10 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--border-width);
+  overflow: hidden;
   background: var(--color-border);
   border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
 .card {
@@ -37,6 +39,7 @@
 
 .badge {
   padding: var(--space-1) 9px;
+  border-radius: var(--radius-sm);
   background: var(--color-accent);
   color: var(--color-bg);
   letter-spacing: var(--tracking-widest);

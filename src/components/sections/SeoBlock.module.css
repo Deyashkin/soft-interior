@@ -33,6 +33,7 @@
 
 .link {
   padding: 9px var(--space-4);
+  border-radius: var(--radius-sm);
   background: var(--color-bg-sunken);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
