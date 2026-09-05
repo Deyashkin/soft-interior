@@ -32,6 +32,25 @@ function PackageGroupSection({
         small
       />
 
+      <div className={styles.about}>
+        <div className={styles.aboutText}>
+          {group.description.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+
+        <div className={styles.factors}>
+          <span className={styles.factorsTitle}>Что влияет на цену</span>
+          <ul className={styles.factorsList}>
+            {group.priceFactors.map((factor) => (
+              <li key={factor} className={styles.factor}>
+                {factor}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
       <div className={styles.grid}>
         {group.packages.map((pack) => (
           <article

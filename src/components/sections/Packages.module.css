@@ -127,6 +127,69 @@
   margin-top: var(--space-6);
 }
 
+/* --- Описание услуги над пакетами --------------------------------------- */
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22.5rem; /* 360px */
+  gap: var(--space-14);
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-10);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.aboutText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-narrow);
+  font-size: var(--text-md);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+.factors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.factorsTitle {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.factorsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.factor {
+  padding-left: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  /* Маркер вместо list-style: списки сброшены в base.css. */
+  position: relative;
+}
+
+.factor::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}
+
 /* --- Итоговый блок «Полный цикл» ---------------------------------------- */
 
 .bundle {
