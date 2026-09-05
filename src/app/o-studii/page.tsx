@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { PageHero } from '@/components/sections/PageHero';
+import { StudioIntro } from '@/components/sections/StudioIntro';
 import { Advantages } from '@/components/sections/Advantages';
 import { Process } from '@/components/sections/Process';
 import { Team } from '@/components/sections/Team';
@@ -27,6 +28,7 @@ export default function AboutPage() {
         lead={`Проектируем и реализуем интерьеры с ${site.foundedYear} года. Забираем на себя весь путь — от первой планировки до расстановки мебели, — чтобы у объекта был один ответственный подрядчик.`}
       />
 
+      <StudioIntro />
       <Advantages />
       <Process />
       <Team />
