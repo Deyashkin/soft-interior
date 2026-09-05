@@ -16,6 +16,7 @@ import styles from './Header.module.css';
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -26,12 +27,47 @@ export function Header() {
         </Link>
 
         <nav className={styles.nav} aria-label="Основное меню">
-          {mainNav.map((item) => (
-            <Link key={item.href} href={item.href} className={styles.navLink}>
-              {item.label}
-              {'children' in item && <span className={styles.caret}>⌄</span>}
-            </Link>
-          ))}
+          {mainNav.map((item) =>
+            'children' in item ? (
+              <div
+                key={item.label}
+                className={styles.navGroup}
+                onMouseEnter={() => setServicesOpen(true)}
+                onMouseLeave={() => setServicesOpen(false)}
+              >
+                <button
+                  type="button"
+                  className={styles.navLink}
+                  aria-expanded={servicesOpen}
+                  onClick={() => setServicesOpen((open) => !open)}
+                >
+                  {item.label}
+                  <span className={styles.caret} aria-hidden="true">
+                    ⌄
+                  </span>
+                </button>
+
+                <div
+                  className={cx(styles.dropdown, servicesOpen && styles.dropdownOpen)}
+                >
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className={styles.dropdownLink}
+                      onClick={() => setServicesOpen(false)}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link key={item.href} href={item.href} className={styles.navLink}>
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className={styles.actions}>
@@ -71,16 +107,32 @@ export function Header() {
       </div>
 
       <div className={cx(styles.mobileMenu, menuOpen && styles.mobileMenuOpen)}>
-        {mainNav.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={styles.mobileLink}
-            onClick={() => setMenuOpen(false)}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {mainNav.map((item) =>
+          'children' in item ? (
+            <div key={item.label} className={styles.mobileGroup}>
+              <span className={styles.mobileGroupTitle}>{item.label}</span>
+              {item.children.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  className={styles.mobileSubLink}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ),
+        )}
 
         <div className={styles.mobileFooter}>
           <a href={`tel:${city.phoneHref}`} className={styles.phone}>
