@@ -1,0 +1,63 @@
+/* Страница отдельного кейса. */
+
+.media {
+  height: 40rem;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin-bottom: var(--space-10);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border-strong);
+}
+
+.metaLabel {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.metaValue {
+  font-size: var(--text-h5);
+}
+
+.text {
+  max-width: var(--content-narrow);
+  font-size: var(--text-lead);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--border-width-thick);
+}
+
+.galleryItem {
+  height: 20rem;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .media {
+    height: 24rem;
+  }
+
+  .meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

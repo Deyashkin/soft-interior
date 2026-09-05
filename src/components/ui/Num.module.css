@@ -1,0 +1,40 @@
+/* Числовой компонент: цены, площади, счётчики, номера этапов.
+   Единственное место, откуда берётся --font-numeric.
+   Поменяли эту роль в tokens.css — поменялись все цифры на сайте. */
+
+.num {
+  font-family: var(--font-numeric);
+  font-weight: var(--weight-numeric);
+  font-feature-settings: var(--font-numeric-features);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-normal);
+  white-space: nowrap;
+}
+
+/* --- Размеры (все из токенов) ------------------------------------------- */
+
+/* Наследует размер родителя — когда нужно только сменить начертание. */
+.inherit {
+  font-size: inherit;
+}
+
+/* Цена в тарифном пакете — самая крупная */
+.priceLg {
+  font-size: var(--text-price-xl);
+}
+
+/* Цена в карточке услуги */
+.price {
+  font-size: var(--text-price);
+}
+
+/* Счётчики под первым экраном: 64, 18 000 м² */
+.stat {
+  font-size: var(--text-stat);
+}
+
+/* Номера этапов: 01–05 */
+.step {
+  font-size: var(--text-step);
+  color: var(--color-accent);
+}

@@ -1,0 +1,224 @@
+/* Портфолио: крупные кейсы с карточкой поверх фотографии. */
+
+/* Секция отрисована без боковых полей (кейсы идут встык),
+   поэтому шапка задаёт себе отступы сама. */
+.header {
+  padding: var(--section-padding-y) var(--container-padding) 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.filter {
+  padding: 9px var(--space-4);
+  border: var(--border-width) solid var(--color-border-strong);
+}
+
+.filterActive {
+  background: var(--color-bg-inverse);
+  border-color: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+/* --- Кейс --------------------------------------------------------------- */
+
+.case {
+  position: relative;
+}
+
+.case + .case {
+  margin-top: var(--border-width-thick);
+}
+
+.caseMedia {
+  height: 45rem; /* 720px */
+}
+
+.overlay {
+  position: absolute;
+  bottom: var(--space-14);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 35rem; /* 560px */
+  max-width: calc(100% - var(--space-14) * 2);
+  padding: var(--space-10) var(--space-8);
+  pointer-events: none;
+}
+
+.overlayLeft {
+  left: var(--space-14);
+}
+
+.overlayRight {
+  right: var(--space-14);
+}
+
+.overlayLight {
+  background: var(--color-overlay-light);
+  color: var(--color-text);
+}
+
+.overlayDark {
+  background: var(--color-overlay-dark);
+  color: var(--color-text-inverse);
+}
+
+.caseEyebrow {
+  font-size: var(--text-3xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.overlayDark .caseEyebrow {
+  color: var(--color-accent-on-dark);
+}
+
+.caseTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2-sm);
+  line-height: 1.08;
+}
+
+.caseSummary {
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.overlayDark .caseSummary {
+  color: var(--color-text-inverse-secondary);
+}
+
+/* --- Характеристики объекта --------------------------------------------- */
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.overlayDark .meta {
+  border-top-color: rgba(var(--rgb-cream), 0.2);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metaLabel {
+  font-size: var(--text-4xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.overlayDark .metaLabel {
+  color: var(--color-text-inverse-faint);
+}
+
+.metaValue {
+  font-size: var(--text-md);
+}
+
+.caseLink {
+  align-self: flex-start;
+  pointer-events: auto;
+}
+
+/* --- Галерея кадров ----------------------------------------------------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--border-width-thick);
+}
+
+.galleryItem {
+  height: 18.75rem; /* 300px */
+  min-width: 0;
+}
+
+/* --- Низ блока ---------------------------------------------------------- */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-14) var(--container-padding);
+}
+
+.footerNote {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .caseMedia {
+    height: 32rem;
+  }
+
+  .overlay {
+    bottom: var(--space-6);
+    padding: var(--space-6);
+  }
+
+  .overlayLeft {
+    left: var(--space-6);
+  }
+
+  .overlayRight {
+    right: var(--space-6);
+  }
+}
+
+/* На узких экранах карточка уезжает под фотографию — читать удобнее. */
+@media (max-width: 800px) {
+  .caseMedia {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .overlay {
+    position: static;
+    width: 100%;
+    max-width: none;
+    padding: var(--space-6) var(--container-padding) var(--space-8);
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .galleryItem {
+    height: 12.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -1,0 +1,59 @@
+/* Тёмная полоса из четырёх преимуществ под первым экраном. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-8);
+  border-right: var(--border-width) solid var(--color-border-inverse-subtle);
+}
+
+.item:last-child {
+  border-right: none;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h6);
+  line-height: var(--leading-snug);
+}
+
+.text {
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-inverse-muted);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .item:nth-child(2n) {
+    border-right: none;
+  }
+
+  .item:nth-child(-n + 2) {
+    border-bottom: var(--border-width) solid var(--color-border-inverse-subtle);
+  }
+}
+
+@media (max-width: 540px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .item {
+    border-right: none;
+    border-bottom: var(--border-width) solid var(--color-border-inverse-subtle);
+  }
+
+  .item:last-child {
+    border-bottom: none;
+  }
+}

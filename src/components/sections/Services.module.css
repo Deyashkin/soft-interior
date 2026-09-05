@@ -1,0 +1,118 @@
+/* Три карточки услуг. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--color-bg);
+  border: var(--border-width) solid var(--color-border-subtle);
+}
+
+.media {
+  height: 14.375rem; /* 230px */
+  min-width: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+  padding: var(--space-8) var(--space-7) var(--space-7);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+}
+
+.summary {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* --- Цена --------------------------------------------------------------- */
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.priceFrom {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.priceUnit {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.more {
+  align-self: flex-start;
+}
+
+/* --- Строка дополнительных услуг ---------------------------------------- */
+
+.extra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  margin-top: var(--grid-gap);
+  padding: var(--space-6) var(--space-8);
+  background: var(--color-bg-accent);
+}
+
+.extraText {
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.extraHighlight {
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .extra {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}

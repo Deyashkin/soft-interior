@@ -1,0 +1,50 @@
+/* Слот под фотографию.
+   Пока изображения нет — рисуется аккуратная заглушка с подписью,
+   чтобы вёрстка не «схлопывалась» и было видно, какой кадр сюда нужен. */
+
+.slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--color-bg-sunken);
+}
+
+.circle {
+  border-radius: var(--radius-full);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Заглушка ----------------------------------------------------------- */
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-4);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-bg-sunken),
+    var(--color-bg-sunken) 10px,
+    var(--color-bg-accent) 10px,
+    var(--color-bg-accent) 20px
+  );
+  text-align: center;
+}
+
+.label {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-raised);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}

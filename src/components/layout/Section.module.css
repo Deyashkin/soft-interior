@@ -1,0 +1,66 @@
+/* Секция = фон во всю ширину экрана + центрированный контейнер внутри.
+   Именно здесь решается вопрос центровки макета:
+   фон растягивается на весь экран, а контент ограничен --container-max
+   и центрируется через margin-inline: auto. */
+
+.section {
+  width: 100%;
+}
+
+/* --- Контейнер ---------------------------------------------------------- */
+
+.inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* Вариант без боковых полей — для сеток встык (тёмная полоса, галереи). */
+.flush {
+  padding-inline: 0;
+}
+
+/* --- Вертикальные отступы ----------------------------------------------- */
+
+.padDefault {
+  padding-block: var(--section-padding-y);
+}
+
+.padSm {
+  padding-block: var(--section-padding-y-sm);
+}
+
+.padXs {
+  padding-block: var(--section-padding-y-xs);
+}
+
+.padNone {
+  padding-block: 0;
+}
+
+/* --- Фоны --------------------------------------------------------------- */
+
+.bgDefault {
+  background: var(--color-bg);
+}
+
+.bgRaised {
+  background: var(--color-bg-raised);
+}
+
+.bgSunken {
+  background: var(--color-bg-sunken);
+}
+
+.bgAccent {
+  background: var(--color-bg-accent);
+}
+
+.bgInverse {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.bgNone {
+  background: transparent;
+}

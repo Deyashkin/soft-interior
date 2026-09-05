@@ -1,0 +1,90 @@
+/* Вопросы и ответы. Гармошка на нативных <details> — работает без JS. */
+
+.layout {
+  display: grid;
+  grid-template-columns: 26.25rem minmax(0, 1fr); /* 420px */
+  gap: var(--space-16);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--text-h2-sm);
+}
+
+.introText {
+  font-size: var(--text-sm);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-top: var(--border-width) solid rgba(var(--rgb-ink), 0.18);
+}
+
+.item:last-child {
+  border-bottom: var(--border-width) solid rgba(var(--rgb-ink), 0.18);
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  font-size: 1.25rem; /* 20px */
+  line-height: var(--leading-snug);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Убираем стандартный треугольник <summary>. */
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.question:hover {
+  color: var(--color-accent);
+}
+
+.sign {
+  flex: none;
+  font-size: 1.25rem;
+  color: var(--color-accent);
+}
+
+.sign::after {
+  content: '+';
+}
+
+.item[open] .sign::after {
+  content: '−';
+}
+
+.answer {
+  max-width: var(--content-narrow);
+  padding-bottom: var(--space-6);
+  font-size: var(--text-md);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .question {
+    font-size: var(--text-lead);
+  }
+}

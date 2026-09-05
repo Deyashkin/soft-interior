@@ -1,0 +1,49 @@
+/* Шапка секции: слева рубрика + H2, справа пояснение или ссылка.
+   Повторяется почти в каждом блоке — поэтому вынесена в компонент. */
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-14);
+  margin-bottom: var(--space-12);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-measure);
+}
+
+.title {
+  font-size: var(--text-h2);
+}
+
+.titleSm {
+  font-size: var(--text-h2-sm);
+}
+
+.aside {
+  max-width: 22.5rem; /* 360px */
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.asideInverse {
+  color: var(--color-text-inverse-muted);
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .aside {
+    max-width: none;
+  }
+}

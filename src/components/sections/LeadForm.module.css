@@ -1,0 +1,165 @@
+/* Заявка: текст слева, форма справа. */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38.75rem; /* 620px */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-22) var(--space-14);
+}
+
+.title {
+  font-size: var(--text-h2-sm);
+}
+
+.text {
+  max-width: 27.5rem; /* 440px */
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.benefit {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+}
+
+.benefitMark {
+  color: var(--color-accent);
+}
+
+.manager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-8);
+}
+
+.managerPhoto {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+}
+
+.managerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.managerName {
+  font-size: var(--text-md);
+}
+
+.managerRole {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* --- Форма -------------------------------------------------------------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-16) var(--space-14);
+  background: var(--color-bg-raised);
+  border-left: var(--border-width) solid var(--color-border);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--text-3xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-3) 0;
+  border: none;
+  border-bottom: var(--border-width) solid var(--color-border-input);
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.input:focus {
+  border-bottom-color: var(--color-accent);
+}
+
+.submit {
+  margin-top: var(--space-3);
+}
+
+.success {
+  padding: var(--space-4);
+  background: var(--color-bg-accent);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.consent {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-faint);
+}
+
+.consentLink {
+  color: var(--color-text-muted);
+  border-bottom: var(--border-width) solid rgba(139, 128, 116, 0.5);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .content {
+    padding: var(--section-padding-y) var(--container-padding) var(--space-8);
+  }
+
+  .form {
+    padding: var(--space-10) var(--container-padding) var(--section-padding-y);
+    border-left: none;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

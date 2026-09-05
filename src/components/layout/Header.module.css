@@ -1,0 +1,208 @@
+/* Липкая шапка сайта. */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--color-header-bg);
+  backdrop-filter: blur(var(--backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+  border-bottom: var(--border-width) solid var(--color-header-border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-5) var(--container-padding);
+}
+
+/* --- Логотип ------------------------------------------------------------ */
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: none;
+}
+
+.logoName {
+  font-family: var(--font-heading);
+  font-size: 1.625rem; /* 26px */
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text);
+}
+
+.logoTagline {
+  font-size: var(--text-5xs);
+  letter-spacing: var(--tracking-tagline);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- Навигация ---------------------------------------------------------- */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-secondary);
+}
+
+.navLink:hover {
+  color: var(--color-accent);
+}
+
+.caret {
+  font-size: var(--text-4xs);
+  color: var(--color-text-faint);
+}
+
+/* --- Правый блок -------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex: none;
+}
+
+.cityToggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid rgba(var(--rgb-ink), 0.18);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.cityToggle:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.cityDot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.phone {
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text);
+}
+
+.hours {
+  font-size: var(--text-4xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- Бургер ------------------------------------------------------------- */
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--space-2);
+}
+
+.burgerLine {
+  width: 22px;
+  height: 1px;
+  background: var(--color-text);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.burgerOpen .burgerLine:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.burgerOpen .burgerLine:nth-child(2) {
+  opacity: 0;
+}
+
+.burgerOpen .burgerLine:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* --- Мобильное меню ----------------------------------------------------- */
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--container-padding) var(--space-8);
+  border-top: var(--border-width) solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.mobileLink {
+  font-size: var(--text-lead);
+  color: var(--color-text);
+}
+
+.mobileFooter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1200px) {
+  .nav {
+    gap: var(--space-4);
+  }
+
+  .contact {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav,
+  .actions {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .mobileMenuOpen {
+    display: flex;
+  }
+}

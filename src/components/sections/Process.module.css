@@ -1,0 +1,55 @@
+/* Пять этапов работы. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap-lg);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border-strong);
+}
+
+/* Первый этап выделен более контрастной линией. */
+.stepFirst {
+  border-top-color: var(--color-text);
+}
+
+/* Название этапа набирается основным шрифтом, а не антиквой. */
+.title {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+}
+
+.text {
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.duration {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+}

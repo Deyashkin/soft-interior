@@ -1,0 +1,166 @@
+/* Подвал сайта — тёмный блок. */
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--space-12);
+  padding-bottom: var(--space-12);
+  border-bottom: var(--border-width) solid var(--color-border-inverse-subtle);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.logoName {
+  font-family: var(--font-heading);
+  font-size: 1.625rem; /* 26px */
+  color: var(--color-text-inverse);
+}
+
+.logoTagline {
+  font-size: var(--text-5xs);
+  letter-spacing: var(--tracking-tagline);
+  text-transform: uppercase;
+  color: var(--color-text-inverse-faint);
+}
+
+.about {
+  font-size: var(--text-xs);
+  line-height: var(--leading-loose);
+  color: var(--color-text-inverse-muted);
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.socialLink {
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--color-border-inverse);
+  font-size: var(--text-2xs);
+  color: var(--color-text-inverse);
+}
+
+.socialLink:hover {
+  background: var(--color-text-inverse);
+  color: var(--color-bg-inverse);
+}
+
+/* --- Колонки ссылок ----------------------------------------------------- */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.columnTitle {
+  font-size: var(--text-3xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-inverse-faint);
+}
+
+.columnLink {
+  font-size: var(--text-sm);
+  color: var(--color-text-inverse-secondary);
+}
+
+.columnLink:hover {
+  color: var(--color-accent-on-dark);
+}
+
+/* --- Контакты ----------------------------------------------------------- */
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.contactBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contactCity {
+  font-size: var(--text-3xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-inverse-faint);
+}
+
+.contactPhone {
+  font-size: var(--text-base);
+  color: var(--color-text-inverse);
+}
+
+.contactAddress {
+  font-size: var(--text-xs);
+  color: var(--color-text-inverse-muted);
+}
+
+.email {
+  font-size: var(--text-sm);
+  color: var(--color-text-inverse-secondary);
+}
+
+/* --- Нижняя строка ------------------------------------------------------ */
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding-top: var(--space-6);
+  font-size: var(--text-2xs);
+  color: var(--color-text-inverse-faint);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.legalLink {
+  color: var(--color-text-inverse-faint);
+}
+
+.legalLink:hover {
+  color: var(--color-text-inverse);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+  .top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-10);
+  }
+}
+
+@media (max-width: 640px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}

@@ -1,0 +1,61 @@
+/* Отзывы на тёмном фоне. */
+
+.rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-7);
+  font-size: var(--text-xs);
+  color: var(--color-text-inverse-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-7);
+  border: var(--border-width) solid rgba(var(--rgb-cream), 0.18);
+}
+
+.quote {
+  font-family: var(--font-heading);
+  font-size: 2.75rem; /* 44px */
+  line-height: 0.6;
+  color: var(--color-accent);
+}
+
+.text {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: auto;
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid rgba(var(--rgb-cream), 0.18);
+}
+
+.authorName {
+  font-size: var(--text-sm);
+}
+
+.authorObject {
+  font-size: var(--text-2xs);
+  color: var(--color-text-inverse-muted);
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

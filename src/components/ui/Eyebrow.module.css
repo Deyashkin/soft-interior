@@ -1,0 +1,21 @@
+/* Надзаголовок-рубрика над H2: «УСЛУГИ», «ПОРТФОЛИО», «ОТЗЫВЫ». */
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-eyebrow);
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  line-height: var(--leading-normal);
+  color: var(--color-accent);
+}
+
+/* На тёмном фоне акцент осветляется. */
+.inverse {
+  color: var(--color-accent-on-dark);
+}
+
+/* Нейтральный вариант — для подписей вроде «Главная · desktop». */
+.muted {
+  color: var(--color-text-muted);
+}

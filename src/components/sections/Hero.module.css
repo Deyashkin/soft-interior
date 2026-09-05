@@ -1,0 +1,111 @@
+/* Первый экран: текст слева, главный кадр справа. */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
+  min-height: 41.25rem; /* 660px */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-7);
+  padding: var(--space-20) var(--space-14);
+}
+
+.title {
+  font-size: var(--text-hero);
+  line-height: 1.04;
+}
+
+.lead {
+  max-width: 27.5rem; /* 440px */
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding-top: var(--space-2);
+}
+
+/* --- Счётчики ----------------------------------------------------------- */
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-10);
+  margin-top: var(--space-6);
+  padding-top: var(--space-7);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.statLabel {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- Изображение -------------------------------------------------------- */
+
+.media {
+  position: relative;
+  min-width: 0;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-overlay-light);
+  font-size: var(--text-4xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .content {
+    padding: var(--space-16) var(--container-padding);
+  }
+
+  .media {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 640px) {
+  .content {
+    gap: var(--space-5);
+    padding: var(--space-12) var(--container-padding);
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stats {
+    gap: var(--space-6);
+  }
+}

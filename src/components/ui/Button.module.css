@@ -1,0 +1,121 @@
+/* Кнопки и текстовые ссылки-действия. Все размеры — из токенов. */
+
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+    border-color var(--transition);
+}
+
+/* --- Размеры ------------------------------------------------------------ */
+
+.sizeSm {
+  padding: var(--space-3) var(--space-6);
+}
+
+.sizeMd {
+  padding: 1.0625rem var(--space-7); /* 17px 28px */
+}
+
+.sizeLg {
+  padding: 1.1875rem var(--space-8); /* 19px 32px */
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* --- Варианты ----------------------------------------------------------- */
+
+/* Основное действие: тёмная заливка */
+.solid {
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+}
+
+.solid:hover {
+  background: var(--color-button-bg-hover);
+  color: var(--color-button-text);
+}
+
+/* Вторичное действие: контур */
+.outline {
+  background: transparent;
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.outline:hover {
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+}
+
+/* Кнопка на тёмном фоне: светлая заливка */
+.light {
+  background: var(--color-button-light-bg);
+  color: var(--color-button-light-text);
+}
+
+.light:hover {
+  background: var(--color-button-light-bg-hover);
+  color: var(--color-button-light-text);
+}
+
+/* Контур на тёмном фоне */
+.outlineInverse {
+  background: transparent;
+  border-color: var(--color-border-inverse);
+  color: var(--color-text-inverse);
+}
+
+.outlineInverse:hover {
+  background: var(--color-text-inverse);
+  color: var(--color-bg-inverse);
+}
+
+/* --- Текстовая ссылка с подчёркиванием ---------------------------------- */
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 0 var(--space-1);
+  border: none;
+  border-bottom: var(--border-width) solid var(--color-border-strong);
+  border-radius: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-text);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.link:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.linkInverse {
+  composes: link;
+  border-bottom-color: rgba(var(--rgb-cream), 0.4);
+  color: var(--color-text-inverse);
+}
+
+.linkInverse:hover {
+  color: var(--color-accent-on-dark);
+  border-bottom-color: var(--color-accent-on-dark);
+}

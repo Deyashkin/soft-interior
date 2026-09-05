@@ -1,0 +1,128 @@
+/* Три тарифных пакета. Сетка с 1px зазором даёт эффект таблицы. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--border-width);
+  background: var(--color-border);
+  border: var(--border-width) solid var(--color-border);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-10) var(--space-8);
+  background: var(--color-bg-raised);
+}
+
+.cardFeatured {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-3xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cardFeatured .number {
+  color: var(--color-text-inverse-muted);
+}
+
+.badge {
+  padding: var(--space-1) 9px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  letter-spacing: var(--tracking-widest);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  line-height: var(--leading-tight);
+}
+
+/* --- Цена --------------------------------------------------------------- */
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.priceFrom,
+.priceUnit {
+  color: var(--color-text-muted);
+}
+
+.priceFrom {
+  font-size: var(--text-2xs);
+}
+
+.priceUnit {
+  font-size: var(--text-sm);
+}
+
+.cardFeatured .priceFrom,
+.cardFeatured .priceUnit {
+  color: var(--color-text-inverse-muted);
+}
+
+/* --- Состав пакета ------------------------------------------------------ */
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding-top: var(--space-5);
+  border-top: var(--border-width) solid var(--color-border);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+
+.cardFeatured .features {
+  border-top-color: rgba(var(--rgb-cream), 0.18);
+  color: var(--color-text-inverse-secondary);
+}
+
+.excluded {
+  color: var(--color-text-disabled);
+}
+
+.cardFeatured .excluded {
+  color: var(--color-text-inverse-faint);
+}
+
+.duration {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.cardFeatured .duration {
+  color: var(--color-text-inverse-muted);
+}
+
+.action {
+  margin-top: auto;
+}
+
+.note {
+  margin-top: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
