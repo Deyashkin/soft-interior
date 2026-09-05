@@ -1,0 +1,122 @@
+/* Список статей блога. */
+
+/* --- Главная статья ----------------------------------------------------- */
+
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  margin-bottom: var(--space-16);
+  padding-bottom: var(--space-16);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.featuredMedia {
+  display: block;
+  height: 26rem;
+  min-width: 0;
+}
+
+.featuredBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.featuredTitle {
+  font-size: var(--text-h2-sm);
+  line-height: var(--leading-tight);
+}
+
+.featuredExcerpt {
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* --- Сетка остальных статей --------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-10) var(--grid-gap);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.media {
+  display: block;
+  height: 15rem;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h5);
+  line-height: var(--leading-snug);
+}
+
+.excerpt {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* --- Служебная строка: рубрика, дата, время чтения ---------------------- */
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.category {
+  color: var(--color-accent);
+}
+
+.dot {
+  color: var(--color-text-faint);
+}
+
+.more {
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .featured {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-10);
+  }
+
+  .featuredMedia {
+    height: 18rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

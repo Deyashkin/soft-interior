@@ -1,6 +1,15 @@
 import { faq } from '@/content/faq';
 import { services } from '@/content/services';
+import { sortedPosts, type Post } from '@/content/posts';
 import { city, site } from '@/config/site';
+
+/** Объём текста статьи — поиск использует его как признак содержательности. */
+function countWords(post: Post) {
+  return post.body.reduce((total, block) => {
+    const text = block.type === 'list' ? block.items.join(' ') : block.text;
+    return total + text.split(/\s+/).length;
+  }, 0);
+}
 
 /**
  * Микроразметка schema.org.
@@ -87,6 +96,59 @@ export function FaqJsonLd() {
           '@type': 'Question',
           name: item.question,
           acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }}
+    />
+  );
+}
+
+/** Статья блога: даёт в выдаче дату, автора и расширенный сниппет. */
+export function ArticleJsonLd({ post }: { post: Post }) {
+  return (
+    <JsonLdScript
+      data={{
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.excerpt,
+        articleSection: post.category,
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt ?? post.publishedAt,
+        wordCount: countWords(post),
+        inLanguage: 'ru-RU',
+        author: { '@type': 'Person', name: post.author },
+        publisher: {
+          '@type': 'Organization',
+          name: site.name,
+          url: site.url,
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${site.url}/blog/${post.slug}/`,
+        },
+      }}
+    />
+  );
+}
+
+/** Список статей — помогает поиску увидеть блог как раздел, а не набор страниц. */
+export function BlogListJsonLd() {
+  return (
+    <JsonLdScript
+      data={{
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: `Блог студии ${site.name}`,
+        url: `${site.url}/blog/`,
+        inLanguage: 'ru-RU',
+        publisher: { '@type': 'Organization', name: site.name, url: site.url },
+        blogPost: sortedPosts.map((post) => ({
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt,
+          datePublished: post.publishedAt,
+          author: { '@type': 'Person', name: post.author },
+          url: `${site.url}/blog/${post.slug}/`,
         })),
       }}
     />
