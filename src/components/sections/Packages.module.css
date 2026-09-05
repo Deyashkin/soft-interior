@@ -122,6 +122,75 @@
   color: var(--color-text-muted);
 }
 
+/* Ссылка на подробную страницу услуги под блоком пакетов. */
+.groupLink {
+  margin-top: var(--space-6);
+}
+
+/* --- Итоговый блок «Полный цикл» ---------------------------------------- */
+
+.bundle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.bundleText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.bundleTitle {
+  font-size: var(--text-h2-sm);
+}
+
+.bundleSummary {
+  font-size: var(--text-lead);
+  color: var(--color-text-inverse-secondary);
+}
+
+.bundleNote {
+  max-width: var(--content-measure);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-inverse-muted);
+}
+
+.bundleAside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-5);
+  flex: none;
+}
+
+.bundleFrom {
+  font-size: var(--text-sm);
+  color: var(--color-text-inverse-muted);
+}
+
+.bundleFooter {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: var(--border-width) solid var(--color-border-inverse-subtle);
+  font-size: var(--text-xs);
+  color: var(--color-text-inverse-muted);
+}
+
+@media (max-width: 900px) {
+  .bundle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  .bundleAside {
+    align-items: flex-start;
+  }
+}
+
 /* --- Адаптив ------------------------------------------------------------ */
 
 @media (max-width: 900px) {
