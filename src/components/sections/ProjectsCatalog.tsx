@@ -30,11 +30,7 @@ export function ProjectsCatalog() {
 
   const visible = useMemo(() => {
     const filter = projectFilters[active];
-    return projects.filter(
-      (project) =>
-        (!filter.city || project.city === filter.city) &&
-        (!filter.type || project.type === filter.type),
-    );
+    return projects.filter((project) => !filter.type || project.type === filter.type);
   }, [active]);
 
   return (
