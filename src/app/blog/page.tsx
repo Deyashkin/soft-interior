@@ -5,7 +5,7 @@ import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { ImageSlot } from '@/components/ui/ImageSlot';
 import { PageHero } from '@/components/sections/PageHero';
-import { SeoBlock } from '@/components/sections/SeoBlock';
+import { InstagramFeed } from '@/components/sections/InstagramFeed';
 import { BlogListJsonLd } from '@/components/seo/JsonLd';
 import { formatPostDate, sortedPosts } from '@/content/posts';
 import styles from './page.module.css';
@@ -124,7 +124,7 @@ export default function BlogPage() {
         </div>
       </Section>
 
-      <SeoBlock />
+      <InstagramFeed />
     </>
   );
 }
