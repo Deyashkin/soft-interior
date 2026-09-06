@@ -133,6 +133,7 @@ export const footerNav = [
 ] as const;
 
 export const legalNav = [
+  { label: 'Публичная оферта', href: '/oferta/' },
   { label: 'Политика конфиденциальности', href: '/politika-konfidencialnosti/' },
   { label: 'Согласие на обработку данных', href: '/soglasie/' },
 ] as const;
