@@ -50,7 +50,7 @@ export function InstagramFeed() {
                   src={post.image}
                   alt={post.alt}
                   label={post.label}
-                  sizes="(max-width: 700px) 50vw, (max-width: 1000px) 33vw, 25vw"
+                  sizes="(max-width: 700px) 50vw, 33vw"
                 />
                 {post.kind && <span className={styles.kind}>{post.kind}</span>}
               </div>
