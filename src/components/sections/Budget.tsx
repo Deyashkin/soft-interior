@@ -9,7 +9,7 @@ import styles from './Budget.module.css';
 /** Прозрачная смета: из чего складывается стоимость. */
 export function Budget() {
   return (
-    <Section bg="default" padding="none" flush>
+    <Section bg="default" flush>
       <div className={styles.layout}>
         <div className={styles.content}>
           <Eyebrow>Смета прозрачно</Eyebrow>

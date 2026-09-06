@@ -18,7 +18,9 @@
   flex-direction: column;
   justify-content: center;
   gap: var(--space-5);
-  padding: var(--space-22) var(--space-14);
+  /* Воздух сверху и снизу даёт сама секция, здесь — только боковой:
+     слева он отделяет текст от фотографии, справа держит поле контейнера. */
+  padding-inline: var(--space-14);
 }
 
 .title {
@@ -68,16 +70,19 @@
 @media (max-width: 1000px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
   }
 
-  /* На узком экране фотография уходит под текст: сначала суть, потом кадр. */
+  /* На узком экране фотография уходит под текст: сначала суть, потом кадр.
+     Отступает от краёв сама — у секции боковых полей нет. */
   .media {
     order: 2;
     min-height: 0;
+    margin-inline: var(--container-padding);
     aspect-ratio: 4 / 3;
   }
 
   .content {
-    padding: var(--section-padding-y) var(--container-padding);
+    padding-inline: var(--container-padding);
   }
 }

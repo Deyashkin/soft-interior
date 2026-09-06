@@ -8,7 +8,7 @@ import styles from './StudioIntro.module.css';
 /** Рассказ о студии: фотография и текст. Страница «О студии». */
 export function StudioIntro() {
   return (
-    <Section bg="raised" padding="none" flush>
+    <Section bg="raised" flush>
       <div className={styles.layout}>
         <div className={styles.media}>
           <ImageSlot

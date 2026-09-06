@@ -8,8 +8,10 @@
 .content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--space-6);
-  padding: var(--space-22) var(--space-14);
+  /* Вертикальный воздух даёт секция, здесь — только боковой. */
+  padding-inline: var(--space-14);
 }
 
 .title {
@@ -92,14 +94,17 @@
 @media (max-width: 1000px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
   }
 
   .content {
-    padding: var(--section-padding-y) var(--container-padding);
+    padding-inline: var(--container-padding);
   }
 
+  /* Отступает от краёв сама — у секции боковых полей нет. */
   .media {
     min-height: 0;
+    margin-inline: var(--container-padding);
     aspect-ratio: 4 / 3;
   }
 }
