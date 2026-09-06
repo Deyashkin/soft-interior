@@ -22,6 +22,13 @@ export interface City {
   phone: string;
   phoneHref: string;
   address: string;
+  /**
+   * Координаты офиса для карты на странице контактов.
+   * ВНИМАНИЕ: сейчас указаны приблизительные точки по названию улицы.
+   * Перед публикацией замените на реальные — их видно в Яндекс.Картах
+   * в адресной строке при клике по нужной точке.
+   */
+  coords: { lat: number; lon: number };
   /** Полный адрес поддомена — на него ведёт переключатель городов */
   origin: string;
 }
@@ -35,6 +42,7 @@ export const cities: Record<CityId, City> = {
     phone: '+7 (495) 123-45-67',
     phoneHref: '+74951234567',
     address: 'ул. Пречистенка, 12, офис 4',
+    coords: { lat: 55.7423, lon: 37.5943 },
     origin: 'https://msk.softinterior.ru',
   },
   sochi: {
@@ -45,6 +53,7 @@ export const cities: Record<CityId, City> = {
     phone: '+7 (862) 123-45-67',
     phoneHref: '+78621234567',
     address: 'ул. Навагинская, 9, офис 21',
+    coords: { lat: 43.5854, lon: 39.7203 },
     origin: 'https://sochi.softinterior.ru',
   },
 };

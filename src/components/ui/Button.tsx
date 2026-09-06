@@ -23,6 +23,8 @@ interface BaseProps {
 
 interface LinkProps extends BaseProps {
   href: string;
+  /** Ссылка на другой сайт: открывается в новой вкладке. */
+  external?: boolean;
   type?: never;
 }
 
@@ -65,6 +67,19 @@ export function Button(props: Props) {
   );
 
   if ('href' in props && props.href) {
+    if (props.external) {
+      return (
+        <a
+          href={props.href}
+          className={classes}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
+    }
+
     return (
       <Link href={props.href} className={classes}>
         {children}

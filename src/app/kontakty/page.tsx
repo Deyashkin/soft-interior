@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { Section } from '@/components/layout/Section';
 import { PageHero } from '@/components/sections/PageHero';
-import { LeadForm } from '@/components/sections/LeadForm';
+import { ContactMap } from '@/components/sections/ContactMap';
 import { cities, currentCityId, site } from '@/config/site';
 import styles from './page.module.css';
 
@@ -46,7 +46,7 @@ export default function ContactsPage() {
         </div>
       </Section>
 
-      <LeadForm />
+      <ContactMap />
     </>
   );
 }

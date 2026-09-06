@@ -1,0 +1,97 @@
+/* Карта офисов на странице контактов. */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.title {
+  font-size: var(--text-h2-sm);
+}
+
+/* --- Переключатель городов ---------------------------------------------- */
+
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.switchButton {
+  padding: 9px var(--space-4);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.switchButton:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.switchActive {
+  background: var(--color-bg-inverse);
+  border-color: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.switchActive:hover {
+  color: var(--color-text-inverse);
+}
+
+/* --- Сама карта ---------------------------------------------------------- */
+
+.frame {
+  position: relative;
+  height: 30rem;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+}
+
+.map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* --- Подпись под картой -------------------------------------------------- */
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.address {
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+}
+
+.addressCity {
+  color: var(--color-text);
+}
+
+@media (max-width: 640px) {
+  .frame {
+    height: 22rem;
+  }
+}
