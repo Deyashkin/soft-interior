@@ -19,6 +19,8 @@ interface BaseProps {
   size?: ButtonSize;
   fullWidth?: boolean;
   className?: string;
+  /** Есть и у ссылок: например, закрыть попап при переходе к форме. */
+  onClick?: () => void;
 }
 
 interface LinkProps extends BaseProps {
@@ -31,7 +33,6 @@ interface LinkProps extends BaseProps {
 interface NativeButtonProps extends BaseProps {
   href?: never;
   type?: 'button' | 'submit';
-  onClick?: () => void;
 }
 
 type Props = LinkProps | NativeButtonProps;
@@ -55,6 +56,7 @@ export function Button(props: Props) {
     size = 'md',
     fullWidth,
     className,
+    onClick,
   } = props;
 
   // Текстовые ссылки не используют размеры и рамки кнопок.
@@ -72,6 +74,7 @@ export function Button(props: Props) {
         <a
           href={props.href}
           className={classes}
+          onClick={onClick}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -81,13 +84,13 @@ export function Button(props: Props) {
     }
 
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={props.href} className={classes} onClick={onClick}>
         {children}
       </Link>
     );
   }
 
-  const { type = 'button', onClick } = props as NativeButtonProps;
+  const { type = 'button' } = props as NativeButtonProps;
 
   return (
     <button type={type} onClick={onClick} className={classes}>
