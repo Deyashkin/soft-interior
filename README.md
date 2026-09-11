@@ -249,7 +249,7 @@ export const fontVariables = [
 <ImageSlot
   src="/images/hero.jpg"
   alt="Гостиная в квартире 128 м², ЖК «Прайм Парк»"
-  priority                              // только для первого экрана
+  preload                               // только для главного кадра первого экрана
   sizes="(max-width: 1100px) 100vw, 55vw"
 />
 ```
@@ -379,4 +379,6 @@ NEXT_PUBLIC_CITY=sochi npm run build
 | телефон | `config/site.ts` |
 | пункт меню | `config/site.ts` → `mainNav` |
 | порядок блоков на главной | `app/page.tsx` |
+| кадры слайдера на первом экране | `content/home.ts` → `heroSlides` |
+| скорость автопрокрутки слайдера | `content/home.ts` → `heroAutoplaySeconds` |
 | добавить страницу | новая папка в `app/` + запись в `app/sitemap.ts` |
