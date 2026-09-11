@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <ImageSlot
             alt={post.coverAlt}
             label={post.coverLabel}
-            priority
+            preload
             sizes="100vw"
           />
         </div>

@@ -57,24 +57,11 @@
   color: var(--color-text-muted);
 }
 
-/* --- Изображение -------------------------------------------------------- */
+/* --- Слайдер кадров ----------------------------------------------------- */
 
 .media {
   position: relative;
   min-width: 0;
-}
-
-.caption {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: var(--space-4) var(--space-5);
-  background: var(--color-overlay-light);
-  font-size: var(--text-4xs);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  pointer-events: none;
 }
 
 /* --- Адаптив ------------------------------------------------------------ */

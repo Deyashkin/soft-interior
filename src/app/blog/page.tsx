@@ -70,7 +70,7 @@ export default function BlogPage() {
             <ImageSlot
               alt={lead.coverAlt}
               label={lead.coverLabel}
-              priority
+              preload
               sizes="(max-width: 800px) 100vw, 55vw"
             />
           </Link>

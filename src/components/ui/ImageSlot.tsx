@@ -11,8 +11,11 @@ interface ImageSlotProps {
   label?: string;
   /** Круглая обрезка — для аватаров. */
   circle?: boolean;
-  /** Грузить сразу, без ленивой загрузки. Ставить только для первого экрана. */
-  priority?: boolean;
+  /**
+   * Загрузить заранее, ещё из <head>. Только для главного кадра первого экрана.
+   * (В Next.js 16 это свойство называется preload; старое priority устарело.)
+   */
+  preload?: boolean;
   /** Подсказка браузеру о ширине картинки в разных вьюпортах. */
   sizes?: string;
   className?: string;
@@ -33,7 +36,7 @@ export function ImageSlot({
   alt,
   label,
   circle,
-  priority,
+  preload,
   sizes = '100vw',
   className,
 }: ImageSlotProps) {
@@ -45,7 +48,7 @@ export function ImageSlot({
           alt={alt}
           fill
           sizes={sizes}
-          priority={priority}
+          preload={preload}
           className={styles.image}
         />
       ) : (

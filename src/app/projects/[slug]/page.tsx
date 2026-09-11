@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <ImageSlot
             alt={`${project.title} — главный кадр интерьера`}
             label={`${project.title} — главный кадр`}
-            priority
+            preload
             sizes="100vw"
           />
         </div>
