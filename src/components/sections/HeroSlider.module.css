@@ -6,8 +6,9 @@
 }
 
 /* --- Лента кадров -------------------------------------------------------
-   Обычная горизонтальная прокрутка с привязкой к кадрам: свайп, тачпад,
-   Shift + колесо и стрелки клавиатуры работают без единой строчки JS. */
+   Обычная горизонтальная прокрутка с привязкой к кадрам: свайп пальцем,
+   тачпад и стрелки клавиатуры работают силами браузера. Свайп мышью
+   дописан в HeroSlider.tsx. */
 
 .track {
   display: flex;
@@ -28,6 +29,18 @@
   outline-offset: 3px;
 }
 
+/* Курсор-«рука» подсказывает, что кадр можно потянуть мышью. */
+@media (hover: hover) and (pointer: fine) {
+  .track {
+    cursor: grab;
+  }
+}
+
+.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .slide {
   position: relative;
   flex: 0 0 100%;
@@ -42,13 +55,18 @@
   border-radius: 0;
 }
 
+/* Название объекта. Стоит на одной линии с панелью стрелок и той же высоты,
+   с отступом от краёв кадра. */
 .caption {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: var(--space-4) var(--space-5);
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  align-items: center;
+  min-height: var(--space-12);
+  padding: var(--space-2) var(--space-5);
   background: var(--color-overlay-light);
-  border-top-right-radius: var(--radius-sm);
+  border-radius: var(--radius-sm);
   font-size: var(--text-4xs);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
@@ -56,7 +74,7 @@
   pointer-events: none;
 }
 
-/* --- Управление --------------------------------------------------------- */
+/* --- Стрелки ------------------------------------------------------------ */
 
 .controls {
   position: absolute;
@@ -65,7 +83,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  overflow: hidden;
   padding: var(--space-1);
   background: var(--color-overlay-light);
   border-radius: var(--radius-sm);
@@ -85,11 +102,6 @@
 
 .button:hover {
   background: var(--color-bg-accent);
-}
-
-.icon {
-  width: 0.625rem;
-  height: 0.625rem;
 }
 
 .counter {
@@ -112,40 +124,22 @@
   color: var(--color-text-faint);
 }
 
-/* Полоса времени до следующего кадра — по нижнему краю панели. */
-.progress {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--color-accent);
-  transform-origin: left;
-  animation: progress var(--slide-duration) linear both;
-}
-
-@keyframes progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
 /* --- Адаптив ------------------------------------------------------------ */
 
 @media (max-width: 640px) {
   /* На узком экране подпись и панель в одну строку не помещаются.
      Счётчик прячем — стрелки и свайп понятны и без него, — а подпись
-     ограничиваем шириной, оставшейся слева от панели (≈ 3 кнопки по 32px). */
+     ограничиваем шириной, оставшейся слева от панели из двух кнопок. */
   .counter {
     display: none;
   }
 
   .caption {
-    max-width: calc(100% - 8.5rem);
-    padding: var(--space-3) var(--space-4);
+    left: var(--space-3);
+    bottom: var(--space-3);
+    max-width: calc(100% - 7rem);
+    min-height: var(--space-10);
+    padding: var(--space-2) var(--space-4);
   }
 
   .controls {

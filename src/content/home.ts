@@ -40,7 +40,7 @@ export const heroSlides: {
 ];
 
 /** Сколько секунд показывается кадр, прежде чем слайдер перелистнёт сам. */
-export const heroAutoplaySeconds = 6;
+export const heroAutoplaySeconds = 3;
 
 /** Тёмная полоса под первым экраном. */
 export const advantages = [

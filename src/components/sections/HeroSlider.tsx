@@ -6,11 +6,11 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
-  type CSSProperties,
   type FocusEvent,
   type PointerEvent,
 } from 'react';
 import { ImageSlot } from '@/components/ui/ImageSlot';
+import { cx } from '@/lib/cx';
 import { heroAutoplaySeconds, heroSlides } from '@/content/home';
 import styles from './HeroSlider.module.css';
 
@@ -36,49 +36,58 @@ function pad(value: number) {
   return String(value).padStart(2, '0');
 }
 
+/** Состояние перетаскивания мышью: откуда начали и с какого кадра. */
+interface DragState {
+  x: number;
+  scrollLeft: number;
+  from: number;
+}
+
 /**
  * Слайдер кадров на первом экране.
  *
- * Листается тремя способами:
+ * Листается:
  *  - сам, раз в heroAutoplaySeconds секунд (src/content/home.ts);
- *  - прокруткой: свайп на телефоне, жест тачпадом, Shift + колесо мыши,
- *    стрелки клавиатуры, когда слайдер в фокусе. Это обычная горизонтальная
- *    прокрутка с привязкой к кадрам (scroll-snap) — её делает сам браузер;
- *  - кнопками «←» / «→».
+ *  - свайпом: на телефоне и тачпаде — пальцами, на компьютере — мышью,
+ *    зажав кадр и потянув в сторону;
+ *  - кнопками «←» / «→» и стрелками клавиатуры, когда слайдер в фокусе.
  *
- * Обычное колесо мыши кадры НЕ листает — намеренно: иначе страница
- * «застревала» бы, пока курсор над фотографией.
- *
- * Автопрокрутка останавливается, пока курсор над слайдером, пока в нём
- * фокус с клавиатуры и пока палец на экране; кнопкой паузы — насовсем.
- * Тем, кто отключил анимации в системе, слайдер сам не листается.
+ * Сам слайдер не листается, пока курсор над ним, пока в нём фокус
+ * с клавиатуры и пока кадр тянут пальцем или мышью — чтобы кадр не уехал
+ * из-под руки. Тем, кто отключил анимации в системе, слайдер сам не листается.
  */
 export function HeroSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const frame = useRef(0);
+  const drag = useRef<DragState | null>(null);
 
   const [index, setIndex] = useState(0);
-  const [userPaused, setUserPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [keyboardFocus, setKeyboardFocus] = useState(false);
   const [touching, setTouching] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const reducedMotion = useReducedMotion();
 
   const count = heroSlides.length;
   const paused =
-    userPaused || hovered || keyboardFocus || touching || reducedMotion;
+    hovered || keyboardFocus || touching || dragging || reducedMotion;
 
-  const goTo = useCallback(
+  const scrollToSlide = useCallback(
     (target: number) => {
       const track = trackRef.current;
       if (!track) return;
-      const next = (target + count) % count;
       track.scrollTo({
-        left: next * track.clientWidth,
+        left: target * track.clientWidth,
         behavior: reducedMotion ? 'auto' : 'smooth',
       });
     },
-    [count, reducedMotion],
+    [reducedMotion],
+  );
+
+  /** Стрелки и автопрокрутка ходят по кругу: после последнего — первый. */
+  const goTo = useCallback(
+    (target: number) => scrollToSlide((target + count) % count),
+    [count, scrollToSlide],
   );
 
   /* Текущий кадр считаем по положению прокрутки — так он верен при любом
@@ -102,8 +111,64 @@ export function HeroSlider() {
     return () => clearTimeout(timer);
   }, [index, paused, count, goTo]);
 
-  /* Пауза при наведении — только для мыши: на телефоне «наведение»
-     срабатывает от касания и потом не снимается. */
+  /* --- Свайп мышью ------------------------------------------------------
+     Пальцем и тачпадом ленту листает сам браузер (это обычная прокрутка
+     с привязкой к кадрам). Мышью браузер так не умеет — дописываем. */
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track || event.pointerType !== 'mouse' || event.button !== 0) return;
+
+    drag.current = {
+      x: event.clientX,
+      scrollLeft: track.scrollLeft,
+      from: Math.round(track.scrollLeft / track.clientWidth),
+    };
+    track.setPointerCapture(event.pointerId);
+    // Пока тянем, привязку к кадрам снимаем: иначе браузер дёргал бы
+    // ленту к ближайшему кадру на каждом пикселе движения.
+    track.style.scrollSnapType = 'none';
+    setDragging(true);
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track || !drag.current) return;
+    track.scrollLeft = drag.current.scrollLeft - (event.clientX - drag.current.x);
+  };
+
+  const endDrag = (event: PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    const state = drag.current;
+    if (!track || !state) return;
+
+    drag.current = null;
+    setDragging(false);
+
+    // Потянули заметно — листаем в ту сторону, чуть-чуть — возвращаем кадр.
+    const distance = event.clientX - state.x;
+    const threshold = Math.min(80, track.clientWidth * 0.15);
+    let target = state.from;
+    if (distance < -threshold) target = Math.min(state.from + 1, count - 1);
+    if (distance > threshold) target = Math.max(state.from - 1, 0);
+
+    scrollToSlide(target);
+
+    // Привязку к кадрам возвращаем, когда лента доехала до места.
+    const fallback = setTimeout(restoreSnap, 700);
+    track.addEventListener('scrollend', restoreSnap, { once: true });
+
+    function restoreSnap() {
+      clearTimeout(fallback);
+      track?.removeEventListener('scrollend', restoreSnap);
+      if (track) track.style.scrollSnapType = '';
+    }
+  };
+
+  /* --- Паузы автопрокрутки ---------------------------------------------- */
+
+  /* При наведении — только для мыши: на телефоне «наведение» срабатывает
+     от касания и потом не снимается. */
   const onPointerEnter = (event: PointerEvent) => {
     if (event.pointerType === 'mouse') setHovered(true);
   };
@@ -111,8 +176,8 @@ export function HeroSlider() {
     if (event.pointerType === 'mouse') setHovered(false);
   };
 
-  /* Пауза при фокусе — только для клавиатуры. Иначе после клика мышью
-     по стрелке кнопка остаётся в фокусе и слайдер замирает навсегда. */
+  /* При фокусе — только для клавиатуры. Иначе после клика мышью по стрелке
+     кнопка остаётся в фокусе и слайдер замирает навсегда. */
   const onFocus = (event: FocusEvent) => {
     if (event.target.matches(':focus-visible')) setKeyboardFocus(true);
   };
@@ -135,12 +200,18 @@ export function HeroSlider() {
     >
       <div
         ref={trackRef}
-        className={styles.track}
+        className={cx(styles.track, dragging && styles.dragging)}
         // Фокус нужен, чтобы листать стрелками клавиатуры.
         tabIndex={0}
         // Пока кадры меняются сами, не зачитываем каждую смену скринридером.
         aria-live={paused ? 'polite' : 'off'}
         onScroll={onScroll}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        // Браузер не должен утаскивать картинку как файл вместо свайпа.
+        onDragStart={(event) => event.preventDefault()}
         onTouchStart={() => setTouching(true)}
         onTouchEnd={() => setTouching(false)}
         onTouchCancel={() => setTouching(false)}
@@ -191,39 +262,6 @@ export function HeroSlider() {
         >
           <span aria-hidden="true">→</span>
         </button>
-
-        {!reducedMotion && (
-          <button
-            type="button"
-            className={styles.button}
-            onClick={() => setUserPaused((value) => !value)}
-            aria-label={
-              userPaused ? 'Включить автопрокрутку' : 'Остановить автопрокрутку'
-            }
-          >
-            {userPaused ? (
-              <svg viewBox="0 0 12 12" className={styles.icon} aria-hidden="true">
-                <path d="M3 1.5v9l7.5-4.5z" fill="currentColor" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 12 12" className={styles.icon} aria-hidden="true">
-                <rect x="2.5" y="1.5" width="2.5" height="9" fill="currentColor" />
-                <rect x="7" y="1.5" width="2.5" height="9" fill="currentColor" />
-              </svg>
-            )}
-          </button>
-        )}
-
-        {/* Полоса до следующего кадра. На паузе прячем, а после неё
-            запускаем заново вместе с таймером — чтобы не расходились. */}
-        {!paused && (
-          <span
-            key={index}
-            className={styles.progress}
-            style={{ '--slide-duration': `${heroAutoplaySeconds}s` } as CSSProperties}
-            aria-hidden="true"
-          />
-        )}
       </div>
     </div>
   );

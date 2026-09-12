@@ -14,7 +14,7 @@ import styles from './Hero.module.css';
  */
 export function Hero() {
   return (
-    <Section bg="default" padding="none" flush>
+    <Section bg="default" padding="xs" flush>
       <div className={styles.hero}>
         <div className={styles.content}>
           <Eyebrow>Студия полного цикла · с {site.foundedYear} года</Eyebrow>
