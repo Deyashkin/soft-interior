@@ -1,0 +1,144 @@
+/* Лента Instagram на странице блога. */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 46rem;
+}
+
+.title {
+  font-size: var(--text-h2-sm);
+  line-height: var(--leading-tight);
+}
+
+/* Звёздочка к дисклеймеру внизу блока. */
+.star {
+  color: var(--color-text-muted);
+}
+
+.lead {
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* --- Сетка публикаций ---------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8) var(--grid-gap);
+  list-style: none;
+}
+
+.item {
+  min-width: 0;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: inherit;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  transition: opacity var(--transition);
+}
+
+/* Приглушаем превью при наведении — подпись под фото в это время
+   становится контрастнее. Оверлей поверх фото не кладём: на мобильных
+   ховера нет, а текст поверх снимка читался бы хуже. */
+.link:hover .media {
+  opacity: 0.85;
+}
+
+/* Плашка «Видео» / «Карусель» в углу превью.
+   Снизу, а не сверху: подпись на заглушке прижата к верхнему краю
+   и они бы накладывались друг на друга. */
+.kind {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 1;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-overlay-light);
+  font-size: var(--text-4xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.caption {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.link:hover .caption {
+  color: var(--color-text);
+}
+
+/* --- Подпись под лентой -------------------------------------------------- */
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.noteText {
+  max-width: 52rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.noteLink {
+  white-space: nowrap;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.noteLink:hover {
+  color: var(--color-link-hover);
+}
+
+.disclaimer {
+  font-size: var(--text-3xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-faint);
+}
+
+/* --- Адаптив ------------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--grid-gap);
+  }
+
+  .caption {
+    font-size: var(--text-xs);
+  }
+}

@@ -1,0 +1,160 @@
+/* Страница статьи. */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 52rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.category {
+  color: var(--color-accent);
+}
+
+.dot {
+  color: var(--color-text-faint);
+}
+
+.title {
+  font-size: var(--text-h1);
+}
+
+.excerpt {
+  max-width: var(--content-narrow);
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.cover {
+  height: 32rem;
+}
+
+/* --- Тело статьи --------------------------------------------------------
+   Ширина ограничена — длинную строку тяжело читать. */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--content-narrow);
+}
+
+.paragraph {
+  font-size: var(--text-lead);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+.subheading {
+  margin-top: var(--space-6);
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.listItem {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.listItem::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+/* --- Подпись автора ------------------------------------------------------ */
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: var(--content-narrow);
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.authorPhoto {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.authorName {
+  font-size: var(--text-md);
+}
+
+.authorNote {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* --- Читайте также ------------------------------------------------------- */
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin-top: var(--space-8);
+}
+
+.relatedCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.relatedTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h6);
+  line-height: var(--leading-snug);
+}
+
+.relatedExcerpt {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* --- Адаптив ------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .cover {
+    height: 18rem;
+  }
+
+  .relatedGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}

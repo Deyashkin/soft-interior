@@ -49,6 +49,7 @@
 .socialLink {
   padding: var(--space-2) var(--space-4);
   border: var(--border-width) solid var(--color-border-inverse);
+  border-radius: var(--radius-sm);
   font-size: var(--text-2xs);
   color: var(--color-text-inverse);
 }

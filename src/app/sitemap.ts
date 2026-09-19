@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { posts } from '@/content/posts';
 import { projects } from '@/content/projects';
 import { site } from '@/config/site';
 
@@ -24,11 +25,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const projectPages = projects.map((project) => ({
     path: `/projects/${project.slug}/`,
     priority: 0.7,
+    lastModified: new Date(),
   }));
 
-  return [...pages, ...projectPages].map((page) => ({
+  // У статей отдаём реальную дату публикации, а не дату сборки.
+  const postPages = posts.map((post) => ({
+    path: `/blog/${post.slug}/`,
+    priority: 0.6,
+    lastModified: new Date(post.updatedAt ?? post.publishedAt),
+  }));
+
+  return [
+    ...pages.map((page) => ({ ...page, lastModified: new Date() })),
+    ...projectPages,
+    ...postPages,
+  ].map((page) => ({
     url: `${site.url}${page.path}`,
-    lastModified: new Date(),
+    lastModified: page.lastModified,
     changeFrequency: 'monthly' as const,
     priority: page.priority,
   }));

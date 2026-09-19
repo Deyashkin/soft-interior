@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { ImageSlot } from '@/components/ui/ImageSlot';
 import { Num } from '@/components/ui/Num';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { projectFilters, projects, projectsTotal } from '@/content/projects';
+import { featuredProjects, projectFilters, projectMeta } from '@/content/projects';
 import { cx } from '@/lib/cx';
 import styles from './Portfolio.module.css';
 
@@ -25,10 +25,10 @@ export function Portfolio() {
             <div className={styles.filters}>
               {projectFilters.map((filter, index) => (
                 <span
-                  key={filter}
+                  key={filter.label}
                   className={cx(styles.filter, index === 0 && styles.filterActive)}
                 >
-                  {filter}
+                  {filter.label}
                 </span>
               ))}
             </div>
@@ -36,7 +36,7 @@ export function Portfolio() {
         />
       </div>
 
-      {projects.map((project) => (
+      {featuredProjects.map((project, index) => (
         <div key={project.slug}>
           <article className={styles.case}>
             <div className={styles.caseMedia}>
@@ -54,12 +54,12 @@ export function Portfolio() {
                 project.theme === 'dark' ? styles.overlayDark : styles.overlayLight,
               )}
             >
-              <span className={styles.caseEyebrow}>{project.eyebrow}</span>
+              <span className={styles.caseEyebrow}>{`Кейс ${String(index + 1).padStart(2, '0')} · ${project.service}`}</span>
               <h3 className={styles.caseTitle}>{project.title}</h3>
               <p className={styles.caseSummary}>{project.summary}</p>
 
               <div className={styles.meta}>
-                {project.meta.map((item) => (
+                {projectMeta(project).map((item) => (
                   <div key={item.label} className={styles.metaItem}>
                     <span className={styles.metaLabel}>{item.label}</span>
                     <span className={styles.metaValue}>
@@ -97,7 +97,7 @@ export function Portfolio() {
 
       <div className={styles.footer}>
         <Button href="/projects/" variant="outline">
-          Все {projectsTotal} проекта <span aria-hidden="true">→</span>
+          Все проекты <span aria-hidden="true">→</span>
         </Button>
         <span className={styles.footerNote}>
           Фильтры по городу, типу объекта, площади и услуге

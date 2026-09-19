@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { PromoPopup } from '@/components/layout/PromoPopup';
 import { OrganizationJsonLd } from '@/components/seo/JsonLd';
 import { fontVariables } from '@/styles/fonts';
 import { city, site } from '@/config/site';
@@ -50,6 +51,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <PromoPopup />
       </body>
     </html>
   );
