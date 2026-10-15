@@ -8,6 +8,8 @@ import { site } from '@/config/site';
  * Добавили новую страницу в src/app — добавьте её и сюда,
  * иначе поисковик найдёт её позже и только по ссылкам.
  */
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: '/', priority: 1 },

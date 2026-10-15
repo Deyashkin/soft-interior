@@ -42,3 +42,16 @@ next-env.d.ts
 
 # claude code (локальные настройки машины)
 .claude/settings.local.json
+
+# ключи сервисного аккаунта Google — хранить в C:\Users\Dima 2\.secrets, не в проекте
+semyadro-*.json
+*-sa.json
+
+# семядро: промежуточные данные скриптов (воспроизводятся: node research/scripts/01…05)
+/research/scripts/out/
+/research/sheets/03_Сырой.csv
+/research/sheets/07_Отбраковка.csv
+
+# static export / env
+/out
+.env*.local

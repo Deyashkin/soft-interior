@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import { city, site } from '@/config/site';
 import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
@@ -26,18 +27,47 @@ const serviceOptions = [
 ];
 const channelOptions = ['Telegram', 'WhatsApp', 'Звонок', 'Email'];
 
+/** Адрес приёма заявок в CRM (сервер в РФ). Задаётся при сборке. */
+const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT;
+
+type Status = 'idle' | 'sending' | 'sent' | 'error';
+
 /**
  * Форма заявки — главная точка захвата.
  *
- * Сейчас отправка только имитируется. Чтобы подключить приём заявок,
- * замените тело handleSubmit на запрос к своему API или CRM.
+ * Данные уходят POST-запросом (JSON) на NEXT_PUBLIC_LEAD_ENDPOINT — это
+ * приёмник CRM LIME//OS. Пока адрес не задан, форма честно говорит,
+ * что заявка не отправлена, и предлагает позвонить.
  */
 export function LeadForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSent(true);
+    if (status === 'sending') return;
+    if (!LEAD_ENDPOINT) {
+      setStatus('error');
+      return;
+    }
+    const form = event.currentTarget;
+    setStatus('sending');
+    try {
+      const response = await fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...Object.fromEntries(new FormData(form)),
+          site: site.url,
+          page: window.location.pathname,
+          consent: true,
+        }),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      form.reset();
+      setStatus('sent');
+    } catch {
+      setStatus('error');
+    }
   }
 
   return (
@@ -155,13 +185,23 @@ export function LeadForm() {
             </select>
           </label>
 
-          <Button type="submit" size="lg" fullWidth className={styles.submit}>
-            Получить расчёт
+          <Button
+            type="submit"
+            size="lg"
+            fullWidth
+            className={styles.submit}
+          >
+            {status === 'sending' ? 'Отправляем…' : 'Получить расчёт'}
           </Button>
 
-          {sent && (
+          {status === 'sent' && (
             <p className={styles.success} role="status">
               Заявка отправлена — ответим в течение рабочего дня.
+            </p>
+          )}
+          {status === 'error' && (
+            <p className={styles.success} role="alert">
+              Не удалось отправить заявку. Позвоните нам: {city.phone}
             </p>
           )}
 
