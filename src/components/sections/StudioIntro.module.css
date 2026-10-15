@@ -1,0 +1,88 @@
+/* Рассказ о студии: фотография слева, текст справа.
+   Зеркально блоку «Смета» ниже на этой же странице — чтобы страница
+   не читалась как две одинаковые полосы. */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.media {
+  position: relative;
+  min-height: 38rem; /* 608px */
+  min-width: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-5);
+  /* Воздух сверху и снизу даёт сама секция, здесь — только боковой:
+     слева он отделяет текст от фотографии, справа держит поле контейнера. */
+  padding-inline: var(--space-14);
+}
+
+.title {
+  font-size: var(--text-h2-sm);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-measure);
+  font-size: var(--text-md);
+  line-height: var(--leading-loose);
+  color: var(--color-text-secondary);
+}
+
+/* --- Факты о студии ----------------------------------------------------- */
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-top: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.factValue {
+  font-size: var(--text-price);
+}
+
+.factLabel {
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- Адаптив ------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
+  }
+
+  /* На узком экране фотография уходит под текст: сначала суть, потом кадр.
+     Отступает от краёв сама — у секции боковых полей нет. */
+  .media {
+    order: 2;
+    min-height: 0;
+    margin-inline: var(--container-padding);
+    aspect-ratio: 4 / 3;
+  }
+
+  .content {
+    padding-inline: var(--container-padding);
+  }
+}

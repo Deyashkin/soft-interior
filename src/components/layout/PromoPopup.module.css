@@ -1,0 +1,99 @@
+/* Ненавязчивая карточка в углу экрана. */
+
+.popup {
+  position: fixed;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: min(23rem, calc(100vw - var(--space-10)));
+  padding: var(--space-6);
+  background: var(--color-bg-raised);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: appear var(--duration-slow) var(--easing) both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h5);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+}
+
+.text {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-1);
+}
+
+.dismiss {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.dismiss:hover {
+  color: var(--color-text);
+}
+
+.note {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-faint);
+}
+
+/* Крестик в углу — дублирует «Не сейчас» для тех, кто ищет его глазами. */
+.close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: var(--space-7);
+  height: var(--space-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-md);
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+.close:hover {
+  background: var(--color-bg-accent);
+  color: var(--color-text);
+}
+
+@media (max-width: 640px) {
+  .popup {
+    right: var(--space-4);
+    left: var(--space-4);
+    bottom: var(--space-4);
+    width: auto;
+    padding: var(--space-5);
+  }
+}
+
+/* Кому анимация мешает — показываем карточку сразу. */
+@media (prefers-reduced-motion: reduce) {
+  .popup {
+    animation: none;
+  }
+}

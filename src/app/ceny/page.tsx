@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { Button } from '@/components/ui/Button';
 import { PageHero } from '@/components/sections/PageHero';
 import { Packages } from '@/components/sections/Packages';
 import { Services } from '@/components/sections/Services';
@@ -8,6 +9,7 @@ import { Faq } from '@/components/sections/Faq';
 import { LeadForm } from '@/components/sections/LeadForm';
 import { SeoBlock } from '@/components/sections/SeoBlock';
 import { FaqJsonLd, ServicesJsonLd } from '@/components/seo/JsonLd';
+import { packageGroups } from '@/content/packages';
 import { city } from '@/config/site';
 
 export const metadata: Metadata = {
@@ -27,7 +29,12 @@ export default function PricesPage() {
       <PageHero
         eyebrow="Цены"
         title={`Цены на дизайн, ремонт и комплектацию ${city.locative}`}
-        lead="Стоимость считается за квадратный метр объекта. Точная смета — после обмеров, обычно в пределах ±7% от предварительного расчёта."
+        lead="По каждой услуге три пакета — от базового до расширенного. Стоимость считается за квадратный метр объекта, точная смета — после обмеров, обычно в пределах ±7% от предварительного расчёта."
+        actions={packageGroups.map((group) => (
+          <Button key={group.slug} href={`#${group.slug}`} variant="link">
+            {group.service}
+          </Button>
+        ))}
       />
 
       <Packages />

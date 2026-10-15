@@ -22,6 +22,13 @@ export interface City {
   phone: string;
   phoneHref: string;
   address: string;
+  /**
+   * Координаты офиса для карты на странице контактов.
+   * ВНИМАНИЕ: сейчас указаны приблизительные точки по названию улицы.
+   * Перед публикацией замените на реальные — их видно в Яндекс.Картах
+   * в адресной строке при клике по нужной точке.
+   */
+  coords: { lat: number; lon: number };
   /** Полный адрес поддомена — на него ведёт переключатель городов */
   origin: string;
 }
@@ -35,6 +42,7 @@ export const cities: Record<CityId, City> = {
     phone: '+7 (495) 123-45-67',
     phoneHref: '+74951234567',
     address: 'ул. Пречистенка, 12, офис 4',
+    coords: { lat: 55.7423, lon: 37.5943 },
     origin: 'https://msk.softinterior.ru',
   },
   sochi: {
@@ -45,6 +53,7 @@ export const cities: Record<CityId, City> = {
     phone: '+7 (862) 123-45-67',
     phoneHref: '+78621234567',
     address: 'ул. Навагинская, 9, офис 21',
+    coords: { lat: 43.5854, lon: 39.7203 },
     origin: 'https://sochi.softinterior.ru',
   },
 };
@@ -76,11 +85,16 @@ export const site = {
   ],
 } as const;
 
-/** Главное меню. Порядок здесь = порядок в шапке. */
+/**
+ * Главное меню. Порядок здесь = порядок в шапке.
+ *
+ * Пункт с `children` — это группа без собственной страницы: в шапке она
+ * раскрывается подменю. «Услуги» существуют только как три отдельные
+ * страницы, общей страницы-рубрики у них нет.
+ */
 export const mainNav = [
   {
     label: 'Услуги',
-    href: '/dizayn-interyera/',
     children: [
       { label: 'Дизайн интерьера', href: '/dizayn-interyera/' },
       { label: 'Ремонт под ключ', href: '/remont/' },
@@ -119,6 +133,7 @@ export const footerNav = [
 ] as const;
 
 export const legalNav = [
+  { label: 'Публичная оферта', href: '/oferta/' },
   { label: 'Политика конфиденциальности', href: '/politika-konfidencialnosti/' },
   { label: 'Согласие на обработку данных', href: '/soglasie/' },
 ] as const;

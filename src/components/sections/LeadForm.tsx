@@ -71,7 +71,7 @@ export function LeadForm() {
   }
 
   return (
-    <Section id="zayavka" bg="default" padding="none" flush>
+    <Section id="zayavka" bg="default" flush>
       <div className={styles.layout}>
         <div className={styles.content}>
           <Eyebrow>Заявка</Eyebrow>

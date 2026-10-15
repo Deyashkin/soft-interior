@@ -21,6 +21,7 @@
   gap: var(--space-5);
   padding: var(--space-8) var(--space-7);
   border: var(--border-width) solid rgba(var(--rgb-cream), 0.18);
+  border-radius: var(--radius-md);
 }
 
 .quote {

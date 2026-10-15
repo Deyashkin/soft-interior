@@ -6,7 +6,7 @@ import { ImageSlot } from '@/components/ui/ImageSlot';
 import { Num } from '@/components/ui/Num';
 import { PageHero } from '@/components/sections/PageHero';
 import { LeadForm } from '@/components/sections/LeadForm';
-import { projects } from '@/content/projects';
+import { projectMeta, projects } from '@/content/projects';
 import styles from './page.module.css';
 
 interface PageProps {
@@ -46,14 +46,18 @@ export default async function ProjectPage({ params }: PageProps) {
         ]}
       />
 
-      <PageHero eyebrow={project.eyebrow} title={project.title} />
+      <PageHero
+        eyebrow={`${project.city} · ${project.service}`}
+        title={project.title}
+        lead={project.summary}
+      />
 
       <Section bg="default" padding="none" flush>
         <div className={styles.media}>
           <ImageSlot
             alt={`${project.title} — главный кадр интерьера`}
             label={`${project.title} — главный кадр`}
-            priority
+            preload
             sizes="100vw"
           />
         </div>
@@ -61,15 +65,13 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <Section bg="raised">
         <div className={styles.meta}>
-          {project.meta.map((item) => (
+          {projectMeta(project).map((item) => (
             <div key={item.label} className={styles.metaItem}>
               <span className={styles.metaLabel}>{item.label}</span>
               <Num className={styles.metaValue}>{item.value}</Num>
             </div>
           ))}
         </div>
-
-        <p className={styles.text}>{project.summary}</p>
       </Section>
 
       {project.gallery.length > 0 && (

@@ -71,6 +71,54 @@
   color: var(--color-text-faint);
 }
 
+/* --- Подменю «Услуги» --------------------------------------------------- */
+
+.navGroup {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: calc(var(--space-4) * -1);
+  display: flex;
+  flex-direction: column;
+  min-width: 15rem;
+  margin-top: var(--space-3);
+  padding: var(--space-2);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-raised);
+  box-shadow: var(--shadow-md);
+  /* Скрыто, но остаётся в потоке — плавное появление и доступность с клавиатуры. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity var(--transition), transform var(--transition),
+    visibility var(--transition);
+}
+
+.dropdownOpen,
+.navGroup:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownLink {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.dropdownLink:hover {
+  background: var(--color-bg-sunken);
+  color: var(--color-text);
+}
+
 /* --- Правый блок -------------------------------------------------------- */
 
 .actions {
@@ -168,6 +216,27 @@
 }
 
 .mobileLink {
+  font-size: var(--text-lead);
+  color: var(--color-text);
+}
+
+/* Группа «Услуги» в мобильном меню: заголовок + вложенные страницы. */
+.mobileGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.mobileGroupTitle {
+  font-size: var(--text-3xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.mobileSubLink {
+  padding-left: var(--space-4);
+  border-left: var(--border-width) solid var(--color-border);
   font-size: var(--text-lead);
   color: var(--color-text);
 }

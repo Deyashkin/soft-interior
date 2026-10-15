@@ -20,6 +20,7 @@
 .filter {
   padding: 9px var(--space-4);
   border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
 }
 
 .filterActive {
@@ -51,6 +52,7 @@
   width: 35rem; /* 560px */
   max-width: calc(100% - var(--space-14) * 2);
   padding: var(--space-10) var(--space-8);
+  border-radius: var(--radius-md);
   pointer-events: none;
 }
 
@@ -201,6 +203,7 @@
     width: 100%;
     max-width: none;
     padding: var(--space-6) var(--container-padding) var(--space-8);
+    border-radius: 0;
   }
 
   .gallery {
