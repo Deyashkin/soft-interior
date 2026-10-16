@@ -1,9 +1,9 @@
 /**
  * ОБЩИЕ НАСТРОЙКИ САЙТА: города, контакты, меню, реквизиты.
  *
- * По плану из макета сайт живёт на двух поддоменах с одинаковой структурой:
- *   msk.softinterior.ru   — Москва и область
- *   sochi.softinterior.ru — Сочи и побережье
+ * Сайт живёт на двух адресах с одинаковой структурой:
+ *   soft-interior.ru       — Москва и область (основной домен)
+ *   sochi.soft-interior.ru — Сочи и побережье
  *
  * Какой город собирается — определяет переменная окружения NEXT_PUBLIC_CITY
  * (значения: moscow | sochi). См. файл .env.local.
@@ -43,7 +43,7 @@ export const cities: Record<CityId, City> = {
     phoneHref: '+74951234567',
     address: 'ул. Пречистенка, 12, офис 4',
     coords: { lat: 55.7423, lon: 37.5943 },
-    origin: 'https://msk.softinterior.ru',
+    origin: 'https://soft-interior.ru',
   },
   sochi: {
     id: 'sochi',
@@ -54,7 +54,7 @@ export const cities: Record<CityId, City> = {
     phoneHref: '+78621234567',
     address: 'ул. Навагинская, 9, офис 21',
     coords: { lat: 43.5854, lon: 39.7203 },
-    origin: 'https://sochi.softinterior.ru',
+    origin: 'https://sochi.soft-interior.ru',
   },
 };
 

@@ -1,47 +1,53 @@
 # Деплой soft-interior
 
-Сайт — статика (`output: 'export'`), серверной части нет.
+Сайт — статика (`output: 'export'`), серверной части нет. Живёт на VDS
+153.76.169.48 (1VDS, Москва), выкладывается через Coolify (deploy.lime-os.ru).
+
+| Адрес | Сборка | Приложение в Coolify |
+|---|---|---|
+| `soft-interior.ru` (+ `www` → редирект) | `NEXT_PUBLIC_CITY=moscow` | `soft-interior-msk` |
+| `sochi.soft-interior.ru` | `NEXT_PUBLIC_CITY=sochi` | `soft-interior-sochi` |
 
 ## Как это работает
 
 1. Push в `main` → GitHub Actions (`.github/workflows/deploy.yml`) собирает сайт
-   дважды (`NEXT_PUBLIC_CITY=moscow|sochi`), упаковывает `out/` в nginx-образ
-   и пушит в GHCR:
+   дважды (moscow, sochi), упаковывает `out/` в nginx-образ и пушит в GHCR:
    - `ghcr.io/deyashkin/soft-interior-moscow:latest`
    - `ghcr.io/deyashkin/soft-interior-sochi:latest`
-2. Coolify (deploy.lime-os.ru) тянет образ из GHCR и перезапускает контейнер.
-3. Прокси Coolify выпускает Let's Encrypt и отдаёт сайт наружу (80/443).
+2. Последний шаг workflow вызывает Deploy Webhook Coolify (POST), Coolify
+   скачивает новый `latest` и перезапускает контейнер. От пуша до сайта ~2 мин.
+3. Прокси Coolify (Traefik) выпускает Let's Encrypt и отдаёт сайт на 80/443.
 
-## Настройка один раз
+## Что уже настроено
 
-GitHub → Settings → Variables → Actions:
-- `LEAD_ENDPOINT` — URL приёма заявок CRM LIME//OS (после фазы 02).
-  Пока пуст: форма показывает «не удалось отправить, позвоните».
+- Сервер вошёл в GHCR от root (`docker login ghcr.io`, PAT `read:packages`,
+  истекает 14.01.2027 — до этой даты выпустить новый и повторить вход).
+- Секреты репозитория: `COOLIFY_TOKEN`, `COOLIFY_WEBHOOK_MSK`,
+  `COOLIFY_WEBHOOK_SOCHI`.
+- SSH на сервер: `ssh -i ~/.ssh/lime_vds deploy@153.76.169.48`
+  (root по ключу закрыт, у `deploy` есть sudo).
 
-Coolify → New resource → Docker Image (по одному на город):
-- image `ghcr.io/deyashkin/soft-interior-moscow`, tag `latest`, порт 80;
-- домен `msk.softinterior.ru`;
-- реестр GHCR: если пакет приватный — добавить PAT с `read:packages`;
-- Webhook деплоя вставить в конец workflow (шаг `curl`) — либо включить
-  автообновление по расписанию.
+Позже: GitHub → Settings → Variables → Actions → `LEAD_ENDPOINT` — URL приёма
+заявок CRM LIME//OS. Пока пуст, форма пишет «не удалось отправить, позвоните».
 
-## Перенос домена
+## Подключение домена
 
-0. Заранее (за 1–2 дня): снизить TTL записей до 300 с.
-1. Выложить оба контейнера в Coolify, проверить по временным адресам
-   (`curl --resolve msk.softinterior.ru:443:153.76.169.48 …` или hosts) —
-   все страницы, `/sitemap.xml`, `/robots.txt`, 404.
-2. Заменить в `src/config/site.ts` плейсхолдеры (телефоны, адреса, ИНН,
-   email, соцсети) — иначе в прод уйдут тестовые данные.
-3. Переключить A-записи `msk` и `sochi` на 153.76.169.48 (AAAA удалить,
-   если указывают на Vercel). Coolify выпустит сертификат на 80-м порту —
-   сначала DNS, потом домен в Coolify.
-4. Проверить https, редиректы `/x` → `/x/`, Яндекс.Вебмастер: переиндексация
-   sitemap. Если был старый домен/адреса — 301 с них на новые.
-5. Vercel держать ещё 3–7 дней как откат (вернуть DNS), затем удалить проект.
+DNS домена обслуживает Timeweb (ns1–ns4.timeweb). До подключения у домена не
+было A-записей, сайт нигде не работал — переносить и откатывать нечего.
+
+1. Timeweb → Домены → soft-interior.ru → DNS: A-записи на 153.76.169.48 для
+   `@`, `www`, `sochi`. Записи AAAA не создавать (IPv6 на сервере нет).
+2. Дождаться, пока `nslookup soft-interior.ru 8.8.8.8` вернёт 153.76.169.48.
+3. Coolify → `soft-interior-msk` → Domains:
+   `https://soft-interior.ru,https://www.soft-interior.ru`, редирект на
+   вариант без www. `soft-interior-sochi` → `https://sochi.soft-interior.ru`.
+   Save → Redeploy. Сертификаты выпускаются по HTTP, поэтому порядок именно
+   такой: сначала DNS, потом домен в Coolify.
+4. Проверить https, редирект www и `/x` → `/x/`, `/sitemap.xml`, `/robots.txt`.
+5. Яндекс.Вебмастер и Google Search Console: добавить сайт, отправить sitemap.
 
 ## Заявки и ПДн
 
 Форма отправляет данные только на `LEAD_ENDPOINT`, который должен быть на
-сервере в РФ. Сторонних сервисов (аналитика, шрифты, капча) на сайте нет:
-шрифты скачиваются при сборке и раздаются со своего домена.
+сервере в РФ. На странице контактов — карта Яндекса (iframe). Других внешних
+сервисов нет: шрифты скачиваются при сборке и раздаются со своего домена.
