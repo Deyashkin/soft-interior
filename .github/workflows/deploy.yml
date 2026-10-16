@@ -13,6 +13,7 @@ jobs:
   image:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         city: [moscow, sochi]
     steps:
@@ -57,6 +58,11 @@ jobs:
           COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
           COOLIFY_WEBHOOK: ${{ matrix.city == 'moscow' && secrets.COOLIFY_WEBHOOK_MSK || secrets.COOLIFY_WEBHOOK_SOCHI }}
         run: |
-          curl --fail --silent --show-error --max-time 30 \
+          code=$(curl --silent --show-error --max-time 30 \
+            -o /tmp/coolify.out -w '%{http_code}' \
             -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
-            "${COOLIFY_WEBHOOK}"
+            "${COOLIFY_WEBHOOK}") || code=curl-error
+          echo "Coolify ответил: HTTP ${code}"
+          head -c 500 /tmp/coolify.out 2>/dev/null || true
+          echo
+          [ "${code}" = "200" ]
