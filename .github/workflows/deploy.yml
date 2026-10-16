@@ -50,3 +50,13 @@ jobs:
           tags: |
             ${{ steps.img.outputs.name }}:latest
             ${{ steps.img.outputs.name }}:${{ github.sha }}
+
+      # Сообщаем Coolify, что образ обновился: он скачает latest и перезапустит контейнер.
+      - name: Deploy via Coolify
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_WEBHOOK: ${{ matrix.city == 'moscow' && secrets.COOLIFY_WEBHOOK_MSK || secrets.COOLIFY_WEBHOOK_SOCHI }}
+        run: |
+          curl --fail --silent --show-error --max-time 30 \
+            -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+            "${COOLIFY_WEBHOOK}"
