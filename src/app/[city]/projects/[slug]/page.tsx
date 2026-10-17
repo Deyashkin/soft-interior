@@ -7,7 +7,8 @@ import { ImageSlot } from '@/components/ui/ImageSlot';
 import { Num } from '@/components/ui/Num';
 import { PageHero } from '@/components/sections/PageHero';
 import { LeadForm } from '@/components/sections/LeadForm';
-import { projectMeta, projects } from '@/content/projects';
+import { projectMeta } from '@/content/projects';
+import { getPublishedProject } from '@/lib/projects';
 import styles from './page.module.css';
 
 interface PageProps {
@@ -21,7 +22,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = projects.find((item) => item.slug === slug);
+  const project = await getPublishedProject(slug);
 
   if (!project) return {};
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ProjectPage({ params }: PageProps) {
   const city = await cityFromParams(params);
   const { slug } = await params;
-  const project = projects.find((item) => item.slug === slug);
+  const project = await getPublishedProject(slug);
 
   if (!project) notFound();
 
@@ -58,6 +59,8 @@ export default async function ProjectPage({ params }: PageProps) {
       <Section bg="default" padding="none" flush>
         <div className={styles.media}>
           <ImageSlot
+            media={project.cover}
+            video="ambient"
             alt={`${project.title} — главный кадр интерьера`}
             label={`${project.title} — главный кадр`}
             preload
@@ -80,11 +83,11 @@ export default async function ProjectPage({ params }: PageProps) {
       {project.gallery.length > 0 && (
         <Section bg="default" padding="none" flush>
           <div className={styles.gallery}>
-            {project.gallery.map((label) => (
-              <div key={label} className={styles.galleryItem}>
+            {project.gallery.map((item) => (
+              <div key={item.id} className={styles.galleryItem}>
                 <ImageSlot
+                  media={item}
                   alt={`${project.title} — дополнительный кадр`}
-                  label={label}
                   sizes="(max-width: 900px) 100vw, 33vw"
                 />
               </div>

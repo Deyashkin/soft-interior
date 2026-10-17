@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/Button';
 import { ImageSlot } from '@/components/ui/ImageSlot';
 import { Num } from '@/components/ui/Num';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { featuredProjects, projectFilters, projectMeta } from '@/content/projects';
+import { projectFilters, projectMeta, type Project } from '@/content/projects';
 import { cx } from '@/lib/cx';
 import styles from './Portfolio.module.css';
 
-/** Портфолио на главной: два развёрнутых кейса. */
-export function Portfolio() {
+/** Портфолио на главной: развёрнутые кейсы (отмечены «на главной» в админке). */
+export function Portfolio({ projects }: { projects: Project[] }) {
   return (
     <Section id="projects" bg="sunken" padding="none" flush>
       <div className={styles.header}>
@@ -36,11 +36,13 @@ export function Portfolio() {
         />
       </div>
 
-      {featuredProjects.map((project, index) => (
+      {projects.map((project, index) => (
         <div key={project.slug}>
           <article className={styles.case}>
             <div className={styles.caseMedia}>
               <ImageSlot
+                media={project.cover}
+                video="ambient"
                 alt={`${project.title} — интерьер после ремонта`}
                 label={`${project.title} — главный кадр`}
                 sizes="100vw"
@@ -81,11 +83,11 @@ export function Portfolio() {
 
           {project.gallery.length > 0 && (
             <div className={styles.gallery}>
-              {project.gallery.map((label) => (
-                <div key={label} className={styles.galleryItem}>
+              {project.gallery.slice(0, 3).map((item) => (
+                <div key={item.id} className={styles.galleryItem}>
                   <ImageSlot
+                    media={item}
                     alt={`${project.title} — дополнительный кадр`}
-                    label={label}
                     sizes="(max-width: 640px) 100vw, (max-width: 800px) 50vw, 33vw"
                   />
                 </div>

@@ -55,3 +55,6 @@ semyadro-*.json
 # static export / env
 /out
 .env*.local
+
+# медиафайлы локальной разработки
+/media-data

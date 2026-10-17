@@ -1,50 +1,78 @@
 # Деплой soft-interior
 
-Сайт — статика (`output: 'export'`), серверной части нет. Живёт на VDS
-153.76.169.48 (1VDS, Москва), выкладывается через Coolify (deploy.lime-os.ru).
+Сервер Next.js в Docker на VDS 153.76.169.48 (1VDS, Москва, рядом с
+candles-shop), выкладывается через Coolify (deploy.lime-os.ru).
 
-| Адрес | Сборка | Приложение в Coolify |
-|---|---|---|
-| `soft-interior.ru` (+ `www` → редирект) | `NEXT_PUBLIC_CITY=moscow` | `soft-interior-msk` |
-| `sochi.soft-interior.ru` | `NEXT_PUBLIC_CITY=sochi` | `soft-interior-sochi` |
+| Что | Где |
+|---|---|
+| Сайт, оба домена | одно приложение `soft-interior`, образ `ghcr.io/deyashkin/soft-interior:latest`, порт 3000 |
+| `soft-interior.ru` (+ `www` → редирект) | Москва |
+| `sochi.soft-interior.ru` | Сочи |
+| Админка | `https://soft-interior.ru/admin/` |
+| База | Postgres 17 в Coolify, отдельный ресурс в проекте soft-interior |
+| Фото и видео | `/data/soft-interior/media` на сервере → `/app/media` в контейнере |
+
+Город определяется по домену запроса (`src/proxy.ts`), поэтому оба домена
+обслуживает один контейнер.
 
 ## Как это работает
 
-1. Push в `main` → GitHub Actions (`.github/workflows/deploy.yml`) собирает сайт
-   дважды (moscow, sochi), упаковывает `out/` в nginx-образ и пушит в GHCR:
-   - `ghcr.io/deyashkin/soft-interior-moscow:latest`
-   - `ghcr.io/deyashkin/soft-interior-sochi:latest`
-2. Последний шаг workflow вызывает Deploy Webhook Coolify (POST), Coolify
-   скачивает новый `latest` и перезапускает контейнер. От пуша до сайта ~2 мин.
-3. Прокси Coolify (Traefik) выпускает Let's Encrypt и отдаёт сайт на 80/443.
+1. Push в `main` → GitHub Actions (`.github/workflows/deploy.yml`):
+   `npm ci`, eslint, `next build` (standalone), упаковка в образ по `Dockerfile`,
+   пуш в GHCR. Next.js на сервере не собирается — это мешало бы магазину.
+2. Последний шаг вызывает Deploy Webhook Coolify (POST, секреты
+   `COOLIFY_WEBHOOK` и `COOLIFY_TOKEN`). Coolify скачивает `latest` и
+   перезапускает контейнер. От пуша до сайта ~2–3 мин.
+3. При старте контейнер сам применяет миграции базы, создаёт первого админа
+   (если пользователей нет) и дообрабатывает файлы, прерванные перезапуском.
+4. Прокси Coolify (Traefik) выпускает Let's Encrypt и отдаёт сайт на 80/443.
 
-## Что уже настроено
+Страницы рендерятся при первом заходе и кэшируются; кэш сбрасывается при
+любом сохранении в админке и, на всякий случай, раз в 10 минут.
 
+## Переменные окружения приложения (Coolify → Environment Variables)
+
+| Переменная | Значение |
+|---|---|
+| `DATABASE_URL` | Postgres URL (internal) из ресурса базы в Coolify |
+| `ADMIN_EMAIL` | email главного админа |
+| `ADMIN_PASSWORD` | пароль главного админа — используется, только если в базе ещё нет ни одного пользователя |
+
+`MEDIA_DIR=/app/media`, `PORT=3000` уже заданы в образе.
+
+`LEAD_ENDPOINT` (GitHub → Settings → Variables → Actions) — URL приёма заявок
+CRM LIME//OS. Вшивается при сборке; пока пуст, форма пишет «не удалось
+отправить, позвоните».
+
+## Хранение файлов и нагрузка
+
+- Оригиналы: `/data/soft-interior/media/originals/` (наружу не отдаются).
+- Сжатые версии: `/data/soft-interior/media/public/<id>/`, раздаёт `/media/…`.
+- Обработка идёт по одному файлу, в один поток, с `nice 19` — второе ядро
+  всегда остаётся магазину. Минута видео с телефона — несколько минут.
+- Лимиты загрузки: фото до 80 МБ, видео до 2 ГБ.
+- Каталог создаётся заранее с владельцем UID 1000 (пользователь `node` в образе):
+  `sudo install -d -o 1000 -g 1000 -m 750 /data/soft-interior/media`.
+
+## Бэкапы
+
+- База: Coolify → ресурс Postgres → Backups → расписание (ежедневно).
+- Файлы: `/data/soft-interior/media` — пока не копируется никуда. Следующий шаг —
+  выгрузка в S3 1VDS по расписанию.
+
+## Доступы
+
+- SSH: `ssh -i ~/.ssh/lime_vds deploy@153.76.169.48` (root по ключу закрыт,
+  у `deploy` sudo без пароля).
 - Сервер вошёл в GHCR от root (`docker login ghcr.io`, PAT `read:packages`,
   истекает 14.01.2027 — до этой даты выпустить новый и повторить вход).
-- Секреты репозитория: `COOLIFY_TOKEN`, `COOLIFY_WEBHOOK_MSK`,
-  `COOLIFY_WEBHOOK_SOCHI`.
-- SSH на сервер: `ssh -i ~/.ssh/lime_vds deploy@153.76.169.48`
-  (root по ключу закрыт, у `deploy` есть sudo).
+- Секреты репозитория: `COOLIFY_TOKEN`, `COOLIFY_WEBHOOK`.
 
-Позже: GitHub → Settings → Variables → Actions → `LEAD_ENDPOINT` — URL приёма
-заявок CRM LIME//OS. Пока пуст, форма пишет «не удалось отправить, позвоните».
+## DNS
 
-## Подключение домена
-
-DNS домена обслуживает Timeweb (ns1–ns4.timeweb). До подключения у домена не
-было A-записей, сайт нигде не работал — переносить и откатывать нечего.
-
-1. Timeweb → Домены → soft-interior.ru → DNS: A-записи на 153.76.169.48 для
-   `@`, `www`, `sochi`. Записи AAAA не создавать (IPv6 на сервере нет).
-2. Дождаться, пока `nslookup soft-interior.ru 8.8.8.8` вернёт 153.76.169.48.
-3. Coolify → `soft-interior-msk` → Domains:
-   `https://soft-interior.ru,https://www.soft-interior.ru`, редирект на
-   вариант без www. `soft-interior-sochi` → `https://sochi.soft-interior.ru`.
-   Save → Redeploy. Сертификаты выпускаются по HTTP, поэтому порядок именно
-   такой: сначала DNS, потом домен в Coolify.
-4. Проверить https, редирект www и `/x` → `/x/`, `/sitemap.xml`, `/robots.txt`.
-5. Яндекс.Вебмастер и Google Search Console: добавить сайт, отправить sitemap.
+DNS домена — Timeweb. A-записи `@`, `www`, `sochi` → 153.76.169.48, AAAA нет
+(публичного IPv6 у сервера нет). Сертификаты выпускаются по HTTP: при смене
+домена сначала DNS, потом домен в Coolify.
 
 ## Заявки и ПДн
 

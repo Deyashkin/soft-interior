@@ -1,5 +1,5 @@
 import { posts } from '@/content/posts';
-import { projects } from '@/content/projects';
+import { getPublishedProjects } from '@/lib/projects';
 import { cityFromParams, type CityParams } from '@/config/city';
 
 /**
@@ -27,6 +27,7 @@ export async function GET(_request: Request, { params }: { params: CityParams })
     { path: '/kontakty/', priority: 0.6 },
   ].map((page) => ({ ...page, lastModified: now }));
 
+  const projects = await getPublishedProjects();
   const projectPages = projects.map((project) => ({
     path: `/projects/${project.slug}/`,
     priority: 0.7,

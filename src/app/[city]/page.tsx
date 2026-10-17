@@ -12,6 +12,7 @@ import { Faq } from '@/components/sections/Faq';
 import { SeoBlock } from '@/components/sections/SeoBlock';
 import { FaqJsonLd, ServicesJsonLd } from '@/components/seo/JsonLd';
 import { cityFromParams, type CityParams } from '@/config/city';
+import { getFeaturedProjects } from '@/lib/projects';
 
 export async function generateMetadata({ params }: { params: CityParams }): Promise<Metadata> {
   const city = await cityFromParams(params);
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: { params: CityParams }): Prom
  */
 export default async function HomePage({ params }: { params: CityParams }) {
   const city = await cityFromParams(params);
+  const featured = await getFeaturedProjects();
   return (
     <>
       <ServicesJsonLd city={city} />
@@ -38,7 +40,7 @@ export default async function HomePage({ params }: { params: CityParams }) {
       <Hero city={city} />
       <Advantages />
       <Services />
-      <Portfolio />
+      <Portfolio projects={featured} />
       <Process />
       <Budget />
       <Team />

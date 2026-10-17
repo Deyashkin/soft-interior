@@ -4,7 +4,8 @@ import { PageHero } from '@/components/sections/PageHero';
 import { ProjectsCatalog } from '@/components/sections/ProjectsCatalog';
 import { LeadForm } from '@/components/sections/LeadForm';
 import { SeoBlock } from '@/components/sections/SeoBlock';
-import { projects, projectsDelivered } from '@/content/projects';
+import { projectsDelivered } from '@/content/projects';
+import { getPublishedProjects } from '@/lib/projects';
 import { cityFromParams, type CityParams } from '@/config/city';
 
 export async function generateMetadata({ params }: { params: CityParams }): Promise<Metadata> {
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: { params: CityParams }): Prom
 
 export default async function ProjectsPage({ params }: { params: CityParams }) {
   const city = await cityFromParams(params);
+  const projects = await getPublishedProjects();
   const moscow = projects.filter((project) => project.city === 'Москва').length;
   const sochi = projects.filter((project) => project.city === 'Сочи').length;
 
@@ -31,7 +33,7 @@ export default async function ProjectsPage({ params }: { params: CityParams }) {
         lead={`Всего сдали ${projectsDelivered} объекта, здесь опубликовано ${projects.length}: ${moscow} в Москве и области, ${sochi} в Сочи и на побережье. У каждого — площадь, срок, состав работ и фотографии результата.`}
       />
 
-      <ProjectsCatalog />
+      <ProjectsCatalog projects={projects} />
       <LeadForm />
       <SeoBlock />
     </>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Section } from '@/components/layout/Section';
 import { ImageSlot } from '@/components/ui/ImageSlot';
 import { Num } from '@/components/ui/Num';
-import { projectFilters, projectMeta, projects } from '@/content/projects';
+import { projectFilters, projectMeta, type Project } from '@/content/projects';
 import { cx } from '@/lib/cx';
 import styles from './ProjectsCatalog.module.css';
 
@@ -25,13 +25,13 @@ function projectsWord(count: number) {
  * Фильтр хранится в состоянии компонента: список небольшой и грузится
  * целиком, поэтому обходимся без запросов на сервер.
  */
-export function ProjectsCatalog() {
+export function ProjectsCatalog({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
 
   const visible = useMemo(() => {
     const filter = projectFilters[active];
     return projects.filter((project) => !filter.type || project.type === filter.type);
-  }, [active]);
+  }, [active, projects]);
 
   return (
     <Section bg="raised">
@@ -63,6 +63,8 @@ export function ProjectsCatalog() {
             <article key={project.slug} className={styles.card}>
               <Link href={`/projects/${project.slug}/`} className={styles.media}>
                 <ImageSlot
+                  media={project.cover}
+                  video="ambient"
                   alt={`${project.title} — интерьер после ремонта`}
                   label={project.title}
                   sizes="(max-width: 900px) 100vw, 50vw"

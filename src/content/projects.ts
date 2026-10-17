@@ -1,18 +1,20 @@
 /**
  * Портфолио: каталог на /projects/, страницы /projects/[slug]/
- * и два развёрнутых кейса на главной.
+ * и развёрнутые кейсы на главной.
  *
- * ЧТОБЫ ДОБАВИТЬ ПРОЕКТ — допишите объект в массив projects ниже.
- * Страница /projects/<slug>/ и запись в sitemap.xml создадутся сами.
+ * Проекты живут в базе и редактируются в админке (/admin). Массив
+ * seedProjects ниже — стартовое наполнение: он попадает в базу один раз,
+ * при первом запуске на пустой базе (src/lib/bootstrap.ts).
  *
- * Поле type используется фильтрами на странице каталога, поэтому значения
- * берём строго из перечислений, а не свободным текстом.
+ * Здесь же — типы и функции, общие для сайта и админки.
  */
+import type { Media } from '@/lib/media/urls';
 
 export type ProjectCity = 'Москва' | 'Сочи';
 export type ProjectType = 'Квартира' | 'Дом' | 'Апартаменты';
 
-export interface Project {
+/** Стартовый проект (до появления базы). */
+export interface SeedProject {
   slug: string;
   title: string;
   city: ProjectCity;
@@ -33,7 +35,7 @@ export interface Project {
   align?: 'left' | 'right';
 }
 
-export const projects: Project[] = [
+export const seedProjects: SeedProject[] = [
   // --- Москва и область -------------------------------------------------
   {
     slug: 'prime-park',
@@ -227,14 +229,32 @@ export const projects: Project[] = [
   },
 ];
 
-/** Крупные кейсы для главной страницы. */
-export const featuredProjects = projects.filter((project) => project.featured);
+/** Проект в том виде, в каком его получает вёрстка (из базы). */
+export interface Project {
+  id: string;
+  slug: string;
+  title: string;
+  city: ProjectCity;
+  type: ProjectType;
+  service: string;
+  area: number;
+  duration: string;
+  year: number;
+  summary: string;
+  featured: boolean;
+  theme: 'light' | 'dark';
+  align: 'left' | 'right';
+  /** Главный кадр: выбранный в админке или первый файл галереи. */
+  cover: Media | null;
+  /** Остальные готовые файлы по порядку (без главного кадра). */
+  gallery: Media[];
+}
 
 /**
  * Характеристики объекта единым списком — под карточки и страницу кейса.
  * Держим в одном месте, чтобы порядок и подписи не разъезжались.
  */
-export function projectMeta(project: Project) {
+export function projectMeta(project: Pick<Project, 'city' | 'area' | 'duration' | 'year'>) {
   return [
     { label: 'Город', value: project.city },
     { label: 'Площадь', value: `${project.area} м²` },
