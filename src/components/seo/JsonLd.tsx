@@ -1,7 +1,7 @@
 import { faq } from '@/content/faq';
 import { services } from '@/content/services';
 import { sortedPosts, type Post } from '@/content/posts';
-import { city, site } from '@/config/site';
+import { site, type City } from '@/config/site';
 
 /** Объём текста статьи — поиск использует его как признак содержательности. */
 function countWords(post: Post) {
@@ -34,7 +34,7 @@ function JsonLdScript({ data }: { data: object }) {
 }
 
 /** Карточка организации. Ставится в корневой layout — на всех страницах. */
-export function OrganizationJsonLd() {
+export function OrganizationJsonLd({ city }: { city: City }) {
   return (
     <JsonLdScript
       data={{
@@ -42,7 +42,7 @@ export function OrganizationJsonLd() {
         '@type': 'HomeAndConstructionBusiness',
         name: site.name,
         description: site.description,
-        url: site.url,
+        url: city.origin,
         email: site.email,
         telephone: city.phone,
         priceRange: '₽₽₽',
@@ -61,7 +61,7 @@ export function OrganizationJsonLd() {
 }
 
 /** Услуги с ценами — для главной и страниц услуг. */
-export function ServicesJsonLd() {
+export function ServicesJsonLd({ city }: { city: City }) {
   return (
     <JsonLdScript
       data={{
@@ -72,7 +72,7 @@ export function ServicesJsonLd() {
           description: service.summary,
           provider: { '@type': 'Organization', name: site.name },
           areaServed: city.name,
-          url: `${site.url}${service.href}`,
+          url: `${city.origin}${service.href}`,
           offers: {
             '@type': 'Offer',
             price: service.priceFrom.replace(/[^\d]/g, ''),
@@ -103,7 +103,7 @@ export function FaqJsonLd() {
 }
 
 /** Статья блога: даёт в выдаче дату, автора и расширенный сниппет. */
-export function ArticleJsonLd({ post }: { post: Post }) {
+export function ArticleJsonLd({ post, city }: { post: Post; city: City }) {
   return (
     <JsonLdScript
       data={{
@@ -120,11 +120,11 @@ export function ArticleJsonLd({ post }: { post: Post }) {
         publisher: {
           '@type': 'Organization',
           name: site.name,
-          url: site.url,
+          url: city.origin,
         },
         mainEntityOfPage: {
           '@type': 'WebPage',
-          '@id': `${site.url}/blog/${post.slug}/`,
+          '@id': `${city.origin}/blog/${post.slug}/`,
         },
       }}
     />
@@ -132,23 +132,23 @@ export function ArticleJsonLd({ post }: { post: Post }) {
 }
 
 /** Список статей — помогает поиску увидеть блог как раздел, а не набор страниц. */
-export function BlogListJsonLd() {
+export function BlogListJsonLd({ city }: { city: City }) {
   return (
     <JsonLdScript
       data={{
         '@context': 'https://schema.org',
         '@type': 'Blog',
         name: `Блог студии ${site.name}`,
-        url: `${site.url}/blog/`,
+        url: `${city.origin}/blog/`,
         inLanguage: 'ru-RU',
-        publisher: { '@type': 'Organization', name: site.name, url: site.url },
+        publisher: { '@type': 'Organization', name: site.name, url: city.origin },
         blogPost: sortedPosts.map((post) => ({
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.excerpt,
           datePublished: post.publishedAt,
           author: { '@type': 'Person', name: post.author },
-          url: `${site.url}/blog/${post.slug}/`,
+          url: `${city.origin}/blog/${post.slug}/`,
         })),
       }}
     />
@@ -158,8 +158,10 @@ export function BlogListJsonLd() {
 /** Хлебные крошки. items — от главной к текущей странице. */
 export function BreadcrumbJsonLd({
   items,
+  city,
 }: {
   items: { name: string; href: string }[];
+  city: City;
 }) {
   return (
     <JsonLdScript
@@ -170,7 +172,7 @@ export function BreadcrumbJsonLd({
           '@type': 'ListItem',
           position: index + 1,
           name: item.name,
-          item: `${site.url}${item.href}`,
+          item: `${city.origin}${item.href}`,
         })),
       }}
     />

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { city, mainNav, otherCity, site } from '@/config/site';
+import { useCity } from '@/config/city-context';
+import { mainNav, otherCityOf, site } from '@/config/site';
 import { cx } from '@/lib/cx';
 import styles from './Header.module.css';
 
@@ -15,6 +16,8 @@ import styles from './Header.module.css';
  * Адреса поддоменов заданы в src/config/site.ts.
  */
 export function Header() {
+  const city = useCity();
+  const otherCity = otherCityOf(city);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 

@@ -4,7 +4,7 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Num } from '@/components/ui/Num';
 import { HeroSlider } from '@/components/sections/HeroSlider';
 import { heroStats } from '@/content/home';
-import { city, site } from '@/config/site';
+import { site, type City } from '@/config/site';
 import styles from './Hero.module.css';
 
 /**
@@ -12,7 +12,7 @@ import styles from './Hero.module.css';
  * Здесь единственный H1 страницы — важно для SEO, второго быть не должно.
  * Справа — слайдер кадров (HeroSlider), кадры задаются в src/content/home.ts.
  */
-export function Hero() {
+export function Hero({ city }: { city: City }) {
   return (
     <Section bg="default" padding="xs" flush>
       <div className={styles.hero}>

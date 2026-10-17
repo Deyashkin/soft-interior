@@ -5,8 +5,9 @@
  *   soft-interior.ru       — Москва и область (основной домен)
  *   sochi.soft-interior.ru — Сочи и побережье
  *
- * Какой город собирается — определяет переменная окружения NEXT_PUBLIC_CITY
- * (значения: moscow | sochi). См. файл .env.local.
+ * Оба адреса обслуживает одно приложение. Город определяет src/proxy.ts
+ * по домену и переписывает адрес на /<город>/… — поэтому все страницы
+ * лежат в src/app/[city]/ и получают город из params.
  */
 
 export type CityId = 'moscow' | 'sochi';
@@ -58,14 +59,21 @@ export const cities: Record<CityId, City> = {
   },
 };
 
-/** Город текущей сборки. */
-export const currentCityId: CityId =
-  (process.env.NEXT_PUBLIC_CITY as CityId) === 'sochi' ? 'sochi' : 'moscow';
+export const cityIds = Object.keys(cities) as CityId[];
 
-export const city = cities[currentCityId];
+export function isCityId(value: string): value is CityId {
+  return value in cities;
+}
 
 /** Второй город — для переключателя в шапке. */
-export const otherCity = cities[currentCityId === 'moscow' ? 'sochi' : 'moscow'];
+export function otherCityOf(city: City): City {
+  return cities[city.id === 'moscow' ? 'sochi' : 'moscow'];
+}
+
+/** Город по домену запроса. Всё, что не sochi.*, — Москва. */
+export function cityIdFromHost(host: string | null): CityId {
+  return host?.startsWith('sochi.') ? 'sochi' : 'moscow';
+}
 
 export const site = {
   name: 'Soft Interior',
@@ -76,7 +84,6 @@ export const site = {
   workingHours: '10:00–20:00',
   foundedYear: 2019,
   legal: 'ООО «Софт Интерьер», ИНН 7701234567',
-  url: city.origin,
   locale: 'ru_RU',
   social: [
     { label: 'Telegram', href: 'https://t.me/softinterior' },

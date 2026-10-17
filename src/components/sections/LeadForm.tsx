@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { city, site } from '@/config/site';
+import { useCity } from '@/config/city-context';
 import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
@@ -40,6 +40,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
  * что заявка не отправлена, и предлагает позвонить.
  */
 export function LeadForm() {
+  const city = useCity();
   const [status, setStatus] = useState<Status>('idle');
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -57,7 +58,7 @@ export function LeadForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...Object.fromEntries(new FormData(form)),
-          site: site.url,
+          site: window.location.origin,
           page: window.location.pathname,
           consent: true,
         }),

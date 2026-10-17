@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
-import { cities, currentCityId, type CityId } from '@/config/site';
+import { useCity } from '@/config/city-context';
+import { cities, type CityId } from '@/config/site';
 import { cx } from '@/lib/cx';
 import styles from './ContactMap.module.css';
 
@@ -29,7 +30,7 @@ function externalUrl(lat: number, lon: number) {
  * загрузку страницы.
  */
 export function ContactMap() {
-  const [active, setActive] = useState<CityId>(currentCityId);
+  const [active, setActive] = useState<CityId>(useCity().id);
   const city = cities[active];
 
   return (

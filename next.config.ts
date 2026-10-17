@@ -1,17 +1,17 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* Статическая сборка: на сервер уезжает папка out/ (nginx в контейнере).
-     Серверной части у сайта нет — заявки уходят прямо в CRM. */
-  output: 'export',
+  /* Сервер Next.js в Docker: сборка кладёт в .next/standalone всё нужное
+     для запуска без node_modules (см. Dockerfile). */
+  output: 'standalone',
 
   /* Адреса со слешем на конце: /remont/ вместо /remont.
      Один вариант написания — меньше дублей в поиске. */
   trailingSlash: true,
 
   images: {
-    /* При output: 'export' нет сервера-оптимизатора картинок, поэтому
-       фото нужно класть в /public уже сжатыми (WebP/AVIF, до 1600 px). */
+    /* Фото из админки сжимаются один раз при загрузке (несколько размеров
+       AVIF/WebP), поэтому встроенный оптимизатор на лету не нужен. */
     unoptimized: true,
   },
 };

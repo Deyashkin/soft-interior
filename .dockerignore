@@ -1,4 +1,4 @@
 *
-!out
-!nginx.conf
-!Dockerfile
+!.next/standalone
+!.next/static
+!public

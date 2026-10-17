@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 import { Section } from './Section';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import type { City } from '@/config/site';
 import styles from './Breadcrumbs.module.css';
 
 export interface Crumb {
@@ -13,12 +14,12 @@ export interface Crumb {
  * Хлебные крошки + микроразметка BreadcrumbList.
  * Последний элемент — текущая страница, ссылкой не оформляется.
  */
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
+export function Breadcrumbs({ items, city }: { items: Crumb[]; city: City }) {
   const trail = [{ name: 'Главная', href: '/' }, ...items];
 
   return (
     <>
-      <BreadcrumbJsonLd items={trail} />
+      <BreadcrumbJsonLd items={trail} city={city} />
       <Section bg="default" padding="none">
         <nav className={styles.nav} aria-label="Хлебные крошки">
           {trail.map((crumb, index) => {

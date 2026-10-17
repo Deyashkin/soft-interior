@@ -9,7 +9,7 @@ import { LeadForm } from '@/components/sections/LeadForm';
 import { SeoBlock } from '@/components/sections/SeoBlock';
 import { FaqJsonLd, ServicesJsonLd } from '@/components/seo/JsonLd';
 import type { Service } from '@/content/services';
-import { city } from '@/config/site';
+import type { City } from '@/config/site';
 import styles from './ServicePage.module.css';
 
 /**
@@ -17,13 +17,13 @@ import styles from './ServicePage.module.css';
  * Используется тремя страницами: дизайн, ремонт, комплектация.
  * Отличаются они только данными из src/content/services.ts.
  */
-export function ServicePage({ service }: { service: Service }) {
+export function ServicePage({ service, city }: { service: Service; city: City }) {
   return (
     <>
-      <ServicesJsonLd />
+      <ServicesJsonLd city={city} />
       <FaqJsonLd />
 
-      <Breadcrumbs items={[{ name: service.title, href: service.href }]} />
+      <Breadcrumbs city={city} items={[{ name: service.title, href: service.href }]} />
 
       <PageHero
         eyebrow="Услуга"
